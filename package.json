@@ -1,12 +1,11 @@
 {
-  "name": "practica-final",
+  "name": "prct12",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
     "coverage": "c8 npm test && c8 report --reporter=lcov",
-    "start": "tsc-watch --onSuccess \"node dist/src/ejercicio-3/prueba.js\"",
     "doc": "typedoc; touch ./docs/ ./docs/.nojekyll",
     "prettier": "prettier --write ."
   },

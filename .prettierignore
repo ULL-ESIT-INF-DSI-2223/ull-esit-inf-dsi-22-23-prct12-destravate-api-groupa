@@ -2,6 +2,11 @@ dist
 .eslintrc.json
 .pretterignore
 .prettierrc.json
+.github
+.coveralls.yml
 package-lock.json
 package.json
 tsconfig.json
+typedoc.json
+coverage
+docs
