@@ -1,4 +1,4 @@
-import { Coordenate } from './Coordenate.js'
+import { Coordinate } from './Coordinate.js'
 import { Activity } from './Activity.js'
 
 /**
@@ -24,14 +24,14 @@ export class Track {
   public name: string
   /**
    * Start point of the track.
-   * @type {Coordenate}
+   * @type {Coordinate}
    */
-  public start: Coordenate
+  public start: Coordinate
   /**
    * End point of the track.
-   * @type {Coordenate}
+   * @type {Coordinate}
    */
-  public end: Coordenate
+  public end: Coordinate
   /**
    * Distance of the track.
    * @type {number}
@@ -71,8 +71,8 @@ export class Track {
   public constructor(
     id: number,
     name: string,
-    start: Coordenate,
-    end: Coordenate,
+    start: Coordinate,
+    end: Coordinate,
     distance: number,
     slope: number,
     activity: Activity

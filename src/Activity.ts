@@ -1,4 +1,8 @@
 /**
  * Type of activity used in the app for the tracks.
  */
-export type Activity = 'running' | 'cycling' | 'walking'
+export enum Activity {
+  running = 'running',
+  cycling = 'cycling',
+  hiking = 'hiking',
+}
