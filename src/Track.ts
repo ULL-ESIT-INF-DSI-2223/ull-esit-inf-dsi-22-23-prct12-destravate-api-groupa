@@ -46,7 +46,7 @@ export class Track {
    * List of users that have done the track.
    * @type {number[]}
    */
-  public users_log: number[]
+  public users_log: number[] = []
   /**
    * Activity to do in the track.
    * @type {Activity}
@@ -56,7 +56,7 @@ export class Track {
    * Score result of the users reviews.
    * @type {number}
    */
-  public score: number
+  public score: number = 0
 
   /**
    * Initializes a track.
@@ -66,9 +66,7 @@ export class Track {
    * @param end End point of the track.
    * @param distance Distance of the track.
    * @param slope Average slope of the track.
-   * @param users_log Users that have done the track.
    * @param activity Activity to do in the track.
-   * @param score Score result of the users reviews.
    */
   public constructor(
     id: number,
@@ -77,9 +75,7 @@ export class Track {
     end: Coordenate,
     distance: number,
     slope: number,
-    users_log: number[],
-    activity: Activity,
-    score: number
+    activity: Activity
   ) {
     this.id = id
     this.name = name
@@ -87,8 +83,6 @@ export class Track {
     this.end = end
     this.distance = distance
     this.slope = slope
-    this.users_log = users_log
     this.activity = activity
-    this.score = score
   }
 }
