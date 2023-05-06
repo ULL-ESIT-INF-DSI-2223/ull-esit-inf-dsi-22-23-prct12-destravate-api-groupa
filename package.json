@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "coverage": "c8 npm test && c8 report --reporter=lcov",
-    "doc": "typedoc; touch ./docs/ ./docs/.nojekyll",
+    "doc": "typedoc --out ./docs ./src & touch docs/.nojekyll",
     "prettier": "prettier --write ."
   },
   "keywords": [],

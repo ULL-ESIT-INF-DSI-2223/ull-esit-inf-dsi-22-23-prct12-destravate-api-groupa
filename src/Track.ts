@@ -56,7 +56,7 @@ export class Track {
    * Score result of the users reviews.
    * @type {number}
    */
-  public score: number = 0
+  public score = 0
 
   /**
    * Initializes a track.
