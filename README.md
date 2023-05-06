@@ -1,7 +1,6 @@
 # Práctica 12 - Destravate
 
-[![Coverage Status](https://coveralls.io/repos/github/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct07-destravate-datamodel-groupa/badge.svg?branch=main)](https://coveralls.io/github/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct07-destravate-datamodel-groupa?branch=main)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ULL-ESIT-INF-DSI-2223_ull-esit-inf-dsi-22-23-prct07-destravate-datamodel-groupa&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ULL-ESIT-INF-DSI-2223_ull-esit-inf-dsi-22-23-prct07-destravate-datamodel-groupa)
+[![Node.js CI](https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct12-destravate-api-groupa/actions/workflows/node.js.yml/badge.svg)](https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct12-destravate-api-groupa/actions/workflows/node.js.yml) [![Coveralls](https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct12-destravate-api-groupa/actions/workflows/coveralls.yml/badge.svg)](https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct12-destravate-api-groupa/actions/workflows/coveralls.yml) [![Sonar-Cloud](https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct12-destravate-api-groupa/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct12-destravate-api-groupa/actions/workflows/sonarcloud.yml) [![pages-build-deployment](https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct12-destravate-api-groupa/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/ULL-ESIT-INF-DSI-2223/ull-esit-inf-dsi-22-23-prct12-destravate-api-groupa/actions/workflows/pages/pages-build-deployment)
 
 ## Introducción
 
@@ -16,45 +15,63 @@ Podríamos decir que otro objetivo de la práctica es trabajar en grupo de maner
 Los requisitos que se nos pedían para las Rutas son los siguientes:
 
 1. ID único de la ruta.
-
 2. Nombre de la ruta.
-
 3. Geolocalización del inicio (coordenadas).
-
 4. Geolocalización del final de la ruta (coordenadas).
-
 5. Longitud de la ruta en kilómetros.
-
 6. Desnivel medio de la ruta.
-
 7. Usuarios que han realizado la ruta (IDs).
-
 8. Tipo de actividad: Indicador si la ruta se puede realizar en bicicleta o corriendo.
-
 9. Calificación media de la ruta.
 
+Para la implementación hemos decidido crear una clase muy sencilla llamada ```Track```, que recoge todos los atributos solicitados de manera pública, con la excepción del identificador, ya que con el objetivo de respetar la exclusividad de este atributo se ha declarado como solo lectura.
+
 #### Código
+
+```typescript
+export class Track {
+  readonly id: number
+  public name: string
+  public start: Coordinate
+  public end: Coordinate
+  public distance: number
+  public slope: number
+  public users_log: number[] = []
+  public activity: Activity
+  public score = 0
+
+  public constructor(
+    id: number,
+    name: string,
+    start: Coordinate,
+    end: Coordinate,
+    distance: number,
+    slope: number,
+    activity: Activity
+  ) {
+    this.id = id
+    this.name = name
+    this.start = start
+    this.end = end
+    this.distance = distance
+    this.slope = slope
+    this.activity = activity
+  }
+}
+```
 
 ### Usuarios
 
 Los requisitos que se nos pedían para los usuarios son los siguientes:
 
 1. ID único del usuario (puede ser un username creado por el usuario en el registro o un valor generado automáticamente por el sistema).
-
 2. Nombre del usuario.
-
 3. Actividades que realiza: Correr o bicicleta.
-
 4. Amigos en la aplicación: Colleción de IDs de usuarios con los que interacciona.
-
 5. Grupos de amigos: Diferentes colecciones de IDs de usuarios con los que suele realizar rutas.
-
 6. Estadísticas de entrenamiento: Cantidad de km y desnivel total acumulados en la semana, mes y año.
-
 7. Rutas favoritas: IDs de las rutas que el usuario ha realizado con mayor frecuencia.
-
 8. Retos activos: IDs de los retos que el usuario está realizando actualmente.
-
 9. Histórico de rutas: Los usuarios deben almacenar el historial de rutas realizadas desde que se registraron en el sistema. La información almacenada en esta estructura de datos deberá contener la información de la fecha y el ID de la ruta realizada. Nótese que un usuario puede realizar más de una ruta al día y está decisión puede afectar al tipo de estructura en el que se almacena la información.
 
 #### Código
@@ -64,17 +81,11 @@ Los requisitos que se nos pedían para los usuarios son los siguientes:
 Los requisitos para grupos son los siguientes:
 
 1. ID único del grupo.
-
 2. Nombre del grupo.
-
 3. Participantes: IDs de los miembros del grupo.
-
 4. Estadísticas de entrenamiento grupal: Cantidad de km y desnivel total acumulados de manera grupal en la semana, mes y año.
-
 5. Clasificación de los usuarios: Ranking de los usuarios que más entrenamientos han realizado históricamente dentro del grupo, es decir, ordenar los usuarios por la cantidad de km totales o desnivel total que han acumulado.
-
 6. Rutas favoritas del grupo: Rutas que los usuarios del grupo han realizado con mayor frecuencia en sus salidas conjuntas.
-
 7. Histórico de rutas realizadas por el grupo: Información similar que almacenan los usuarios pero en este caso referente a los grupos. Nótese que un usuario puede realizar rutas con un grupo y/o de manera individual el mismo día. Es decir, a modo de simplificación, asumimos que todos los usuarios de un grupo realizan la actividad cuando se planifica. Aunque, también pueden realizar otras actividades de manera individual.
 
 #### Código
@@ -88,15 +99,10 @@ Los requisitos para grupos son los siguientes:
 Los requisitos para los retos son los siguientes:
 
 1. ID único del reto.
-
 2. Nombre del reto.
-
 3. Rutas que forman parte del reto.
-
 4. Tipo de actividad del reto: bicicleta o correr.
-
 5. Km totales a realizar (como la suma de los kms de las rutas que lo engloban).
-
 6. Usuarios que están realizando el reto.
 
 #### Código
