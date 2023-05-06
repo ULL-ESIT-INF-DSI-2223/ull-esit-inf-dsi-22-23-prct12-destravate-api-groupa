@@ -11,8 +11,6 @@ Podríamos decir que otro objetivo de la práctica es trabajar en grupo de maner
 
 ## Desarrollo
 
-
-
 ### Tracks
 
 Los requisitos que se nos pedían para las Rutas son los siguientes:
@@ -36,8 +34,6 @@ Los requisitos que se nos pedían para las Rutas son los siguientes:
 9. Calificación media de la ruta.
 
 #### Código
-
-
 
 ### Usuarios
 
@@ -63,8 +59,6 @@ Los requisitos que se nos pedían para los usuarios son los siguientes:
 
 #### Código
 
-
-
 ### Grupos
 
 Los requisitos para grupos son los siguientes:
@@ -85,12 +79,9 @@ Los requisitos para grupos son los siguientes:
 
 #### Código
 
-
 ### Estadística
 
 #### Código
-
-
 
 ### Retos
 
@@ -110,7 +101,6 @@ Los requisitos para los retos son los siguientes:
 
 #### Código
 
-
 ### Gestor
 
 Cuyo enunciado nos indicaba lo siguiente:
@@ -129,8 +119,6 @@ Visualizar, crear y borrar grupos. Un usuario podrá borrar un grupo, pero solo 
 
 #### Código
 
-
-
 ## Pruebas y cubrimiento
 
 Han sido realiazadas pruebas con mucha y chai con el fin de verificar el correcto funcionamiento de todos y cada uno de los ficheros del proyecto. A continuación se muestras las pruebas realizadas para cada parte:
@@ -139,21 +127,13 @@ Han sido realiazadas pruebas con mucha y chai con el fin de verificar el correct
 
 Y como podemos ver a continuación todas las pruebas fueron superadas con éxito:
 
-
-
 También podemos comprobar el cubrimiento de código con Istanbul y Coveralls:
 
-
-
 Así que por último mostramos su funcionamiento por terminal:
-
-
 
 ## Conclusión
 
 Ha sido una práctica con cierto nivel de complejidad pero que nos a ayudado no a saber trabajar en equipo por separado si no a usar herramientas como LiveShare en VSC que ha sido de gran ayuda. Cabe destacar que en esta práctica hemos alcanzado nuestro objetivo que era acabar con algo funcional, gracias al uso de todos los conocimientos adquiridos en la asignatura hasta esta semana. Incluso utilizamos patrones como `Singleton` por ejemplo. También tuvimos en cuenta y respetamos los principios Solid.
-
-
 
 ## Elementos Bibliográficos:
 
