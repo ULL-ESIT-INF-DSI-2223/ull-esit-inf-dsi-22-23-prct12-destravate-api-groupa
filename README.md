@@ -24,11 +24,24 @@ Los requisitos que se nos pedían para las Rutas son los siguientes:
 8. Tipo de actividad: Indicador si la ruta se puede realizar en bicicleta o corriendo.
 9. Calificación media de la ruta.
 
-Para la implementación hemos decidido crear una clase muy sencilla llamada ```Track```, que recoge todos los atributos solicitados de manera pública, con la excepción del identificador, ya que con el objetivo de respetar la exclusividad de este atributo se ha declarado como solo lectura.
+Para la implementación hemos decidido crear una clase muy sencilla llamada `Track`, que recoge todos los atributos solicitados de manera pública, con la excepción del identificador, ya que con el objetivo de respetar la exclusividad de este atributo se ha declarado como solo lectura.
+
+Además, cabe destacar que para aumentar la modularidad del código, se desarrolló un enumerado `Activity` y un tipo de objeto `Coordinate`, que se utilizan en la clase `Track`.
 
 #### Código
 
 ```typescript
+export type Coordinate = {
+  lat: number
+  lng: number
+}
+
+export enum Activity {
+  running = 'running',
+  cycling = 'cycling',
+  hiking = 'hiking',
+}
+
 export class Track {
   readonly id: number
   public name: string

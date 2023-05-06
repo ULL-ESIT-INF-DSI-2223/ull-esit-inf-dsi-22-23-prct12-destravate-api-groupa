@@ -4,6 +4,7 @@ import { expect } from 'chai'
 import { Activity } from '../src/Activity.js'
 import { Coordinate } from '../src/Coordinate.js'
 import { Track } from '../src/Track.js'
+import { User } from '../src/User.js'
 
 describe('Track class tests', () => {
   const coord1: Coordinate = {
@@ -65,5 +66,20 @@ describe('Track class tests', () => {
   it('Track Objects should have a score', () => {
     expect(track1.score).to.be.a('number')
     expect(track1.score).to.equal(0)
+  })
+})
+
+describe('User class tests', () => {
+  const user = new User(0, 'Iluzio', Activity.running)
+  it('User Objects should have an id', () => {
+    expect(user.id).to.be.a('number')
+    expect(user.id).to.equal(0)
+  })
+  it('User Objects should have a name', () => {
+    expect(user.name).to.be.a('string')
+    expect(user.name).to.equal('Iluzio')
+  })
+  it('User Objects should have an sport activity', () => {
+    expect(Object.values(Activity)).to.include(user.activity)
   })
 })

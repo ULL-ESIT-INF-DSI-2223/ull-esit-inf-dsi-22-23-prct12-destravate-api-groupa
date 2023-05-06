@@ -15,8 +15,9 @@ export class Track {
   /**
    * Unique id of the track.
    * @type {number}
+   * @readonly
    */
-  readonly id: number
+  public readonly id: number
   /**
    * Name of the track.
    * @type {string}
