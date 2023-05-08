@@ -82,4 +82,52 @@ describe('User class tests', () => {
   it('User Objects should have an sport activity', () => {
     expect(Object.values(Activity)).to.include(user.activity)
   })
+
+  it('User Objects should have a list of friends', () => {
+    expect(user.friends).to.be.a('array')
+    expect(user.friends).to.have.lengthOf(0)
+  })
+  it('User Objects should be able to add friends', () => {
+    user.addFriend(1)
+    expect(user.friends).to.have.lengthOf(1)
+    expect(user.friends).to.include(1)
+  })
+  it('User Objects should be able to remove friends', () => {
+    user.removeFriend(1)
+    expect(user.friends).to.have.lengthOf(0)
+    expect(user.friends).to.not.include(1)
+  })
+  it('User Objects should have a list of groups in which the user is', () => {
+    expect(user.groups).to.be.a('array')
+    expect(user.groups).to.have.lengthOf(0)
+  })
+  it('User Objects should be able to add groups', () => {
+    user.addGroup(1)
+    expect(user.groups).to.have.lengthOf(1)
+    expect(user.groups).to.include(1)
+  })
+  it('User Objects should be able to remove groups', () => {
+    user.removeGroup(1)
+    expect(user.groups).to.have.lengthOf(0)
+    expect(user.groups).to.not.include(1)
+  })
+  it('User Objects should know if the friend/group is in the list when adding', () => {
+    user.addFriend(1)
+    expect(user.addFriend(1)).to.be.false
+    user.addGroup(1)
+    expect(user.addGroup(1)).to.be.false
+  })
+  it('User Objects should know if the friend/group is not in the list when removing', () => {
+    expect(user.removeFriend(2)).to.be.false
+    expect(user.removeGroup(2)).to.be.false
+  })
+  it('User Objects should have stats', () => {
+    expect(Object.keys(user.stats.values)).includes('weekly')
+    expect(Object.keys(user.stats.values)).includes('monthly')
+    expect(Object.keys(user.stats.values)).includes('yearly')
+  })
+  it('User Objects should be able to reset stats', () => {
+    user.stats.reset()
+    expect(user.stats.values).to.be.empty
+  })
 })
