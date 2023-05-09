@@ -1,4 +1,4 @@
-import { GroupStats } from './Stats.js'
+import { Stats } from './Stats.js'
 import { UniqueList } from './UniqueList.js'
 
 /**
@@ -25,9 +25,9 @@ export class Group {
 
   /**
    * Stats of the group.
-   * @type {GroupStats}
+   * @type {Stats}
    */
-  public stats: GroupStats = new GroupStats()
+  public stats: Stats = new Stats()
 
   /**
    * List of favorite tracks of the group.
@@ -43,5 +43,10 @@ export class Group {
   public constructor(id: number, name: string) {
     this.id = id
     this.name = name
+    this.stats.values = {
+      weekly: { km: 0, slope: 0 },
+      monthly: { km: 0, slope: 0 },
+      yearly: { km: 0, slope: 0 },
+    }
   }
 }
