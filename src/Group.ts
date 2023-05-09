@@ -48,9 +48,10 @@ export class Group {
    * @param id Id of the group.
    * @param name Name of the group.
    */
-  public constructor(id: number, name: string) {
+  public constructor(id: number, name: string, ...members: number[]) {
     this.id = id
     this.name = name
+    for (const member of members) this.members.add(member)
     this.stats.values = {
       weekly: { km: 0, slope: 0 },
       monthly: { km: 0, slope: 0 },
