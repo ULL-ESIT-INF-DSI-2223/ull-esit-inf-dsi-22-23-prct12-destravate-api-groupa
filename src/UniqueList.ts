@@ -9,11 +9,6 @@ export class UniqueList {
   private _values: number[] = []
 
   /**
-   * Initializes a new instance of the UniqueList class.
-   */
-  public constructor() {}
-
-  /**
    * Getter for the values list.
    * @returns The values list.
    */
