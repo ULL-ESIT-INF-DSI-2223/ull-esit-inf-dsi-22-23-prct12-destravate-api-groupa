@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "test": "mocha",
-    "coverage": "npm run prettier & npm run doc & c8 npm test && c8 report --reporter=lcov",
+    "coverage": "c8 npm test && c8 report --reporter=lcov",
     "doc": "typedoc --out ./docs ./src & touch docs/.nojekyll",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "all": "npm run prettier & npm run doc & c8 npm test && c8 report --reporter=lcov"
   },
   "keywords": [],
   "author": "",
