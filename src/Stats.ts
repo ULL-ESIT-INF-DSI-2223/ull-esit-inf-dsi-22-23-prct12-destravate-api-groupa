@@ -8,6 +8,7 @@ export type Stat = {
    * @type {number}
    */
   km: number
+
   /**
    * Slope of the stat.
    * @type {number}
@@ -38,7 +39,10 @@ export abstract class Stats {
    * @returns {void}
    */
   public reset(): void {
-    this.values = {}
+    for (const key in this.values) {
+      this.values[key].km = 0
+      this.values[key].slope = 0
+    }
   }
 }
 

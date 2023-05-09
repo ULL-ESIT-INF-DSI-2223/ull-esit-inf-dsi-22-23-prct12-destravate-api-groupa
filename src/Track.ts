@@ -18,41 +18,49 @@ export class Track {
    * @readonly
    */
   public readonly id: number
+
   /**
    * Name of the track.
    * @type {string}
    */
   public name: string
+
   /**
    * Start point of the track.
    * @type {Coordinate}
    */
   public start: Coordinate
+
   /**
    * End point of the track.
    * @type {Coordinate}
    */
   public end: Coordinate
+
   /**
    * Distance of the track.
    * @type {number}
    */
   public distance: number
+
   /**
    * Average slope of the track.
    * @type {number}
    */
   public slope: number
+
   /**
    * List of users that have done the track.
    * @type {number[]}
    */
   public users_log: number[] = []
+
   /**
    * Activity to do in the track.
    * @type {Activity}
    */
   public activity: Activity
+
   /**
    * Score result of the users reviews.
    * @type {number}

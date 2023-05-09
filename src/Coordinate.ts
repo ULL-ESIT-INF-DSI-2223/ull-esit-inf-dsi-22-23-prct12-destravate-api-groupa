@@ -14,6 +14,7 @@ export type Coordinate = {
    * @type {number}
    */
   lat: number
+
   /**
    * Longitude of the coordinate.
    * @type {number}
