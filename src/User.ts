@@ -41,7 +41,7 @@ export class User {
    * Stats of the user.
    * @type {UserStats}
    */
-  private _stats: Stats = new Stats()
+  public stats: Stats = new Stats()
 
   /**
    * List of favorite tracks of the user.
@@ -65,18 +65,10 @@ export class User {
     this.id = id
     this.name = name
     this.activity = activity
-    this._stats.values = {
+    this.stats.values = {
       weekly: { km: 0, slope: 0 },
       monthly: { km: 0, slope: 0 },
       yearly: { km: 0, slope: 0 },
     }
-  }
-
-  /**
-   * Getter for the stats.
-   * @returns The stats.
-   */
-  public get stats(): Stats {
-    return this._stats
   }
 }
