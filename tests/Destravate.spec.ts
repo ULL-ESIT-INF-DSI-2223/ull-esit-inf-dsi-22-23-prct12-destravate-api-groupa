@@ -6,6 +6,7 @@ import { Coordinate } from '../src/Coordinate.js'
 import { Track } from '../src/Track.js'
 import { User } from '../src/User.js'
 import { Group } from '../src/Group.js'
+import { UniqueList } from '../src/UniqueList.js'
 
 describe('Track class tests', () => {
   const coord1: Coordinate = {
@@ -58,8 +59,8 @@ describe('Track class tests', () => {
     expect(track1.slope).to.equal(0.5)
   })
   it('Track Objects should have a list of users that have done the track', () => {
-    expect(track1.users_log).to.be.a('array')
-    expect(track1.users_log).to.have.lengthOf(0)
+    expect(track1.users_log.values).to.be.a('array')
+    expect(track1.users_log.values).to.have.lengthOf(0)
   })
   it('Track Objects should have an activity', () => {
     expect(Object.values(Activity)).to.include(track1.activity)
@@ -151,7 +152,18 @@ describe('User class tests', () => {
     expect(user.active_challenges.values).to.have.lengthOf(0)
     expect(user.active_challenges.values).to.not.include(1)
   })
-  it('User Objects should know if the friend/group/favorite/challenge is in the list when adding', () => {
+  it('User Objects should have a record of the tracks done', () => {
+    expect(user.records.values).to.be.a('array')
+    expect(user.records.values).to.have.lengthOf(0)
+  })
+  it('User Objects should be able to add records', () => {
+    user.records.add({ date: '2019-01-01', tracks: new UniqueList(1, 2, 3) })
+    expect(user.records.values).to.have.lengthOf(1)
+    expect(user.records.values).to.be.deep.equal([
+      { date: '2019-01-01', tracks: new UniqueList(1, 2, 3) },
+    ])
+  })
+  it('User Objects should know if the friend/group/favorite/challenge/record is in the list when adding', () => {
     user.friends.add(1)
     expect(user.friends.add(1)).to.be.false
     user.groups.add(1)
@@ -160,12 +172,19 @@ describe('User class tests', () => {
     expect(user.favorites.add(1)).to.be.false
     user.active_challenges.add(1)
     expect(user.active_challenges.add(1)).to.be.false
+    user.records.add({ date: '2019-01-01', tracks: new UniqueList(1, 2, 3) })
+    expect(
+      user.records.add({ date: '2019-01-01', tracks: new UniqueList(1, 2, 3) })
+    ).to.be.false
   })
-  it('User Objects should know if the friend/group/favorite/challenge is not in the list when removing', () => {
+  it('User Objects should know if the friend/group/favorite/challenge/record is not in the list when removing', () => {
     expect(user.friends.remove(2)).to.be.false
     expect(user.groups.remove(2)).to.be.false
     expect(user.favorites.remove(2)).to.be.false
     expect(user.active_challenges.remove(2)).to.be.false
+    expect(
+      user.records.remove({ date: '2019-01-01', tracks: new UniqueList(1, 2) })
+    ).to.be.false
   })
 })
 
@@ -217,5 +236,33 @@ describe('Group class tests', () => {
     group.favorites.remove(1)
     expect(group.favorites.values).to.have.lengthOf(0)
     expect(group.favorites.values).to.not.include(1)
+  })
+  it('Group Objects should have a record of the tracks done', () => {
+    expect(group.records.values).to.be.a('array')
+    expect(group.records.values).to.have.lengthOf(0)
+  })
+  it('Group Objects should be able to add records', () => {
+    group.records.add({ date: '2019-01-01', tracks: new UniqueList(1, 2, 3) })
+    expect(group.records.values).to.have.lengthOf(1)
+    expect(group.records.values).to.be.deep.equal([
+      { date: '2019-01-01', tracks: new UniqueList(1, 2, 3) },
+    ])
+  })
+  it('Group Objects should know if the user/favorite/record is in the list when adding', () => {
+    group.members.add(1)
+    expect(group.members.add(1)).to.be.false
+    group.favorites.add(1)
+    expect(group.favorites.add(1)).to.be.false
+    group.records.add({ date: '2019-01-01', tracks: new UniqueList(1, 2, 3) })
+    expect(
+      group.records.add({ date: '2019-01-01', tracks: new UniqueList(1, 2, 3) })
+    ).to.be.false
+  })
+  it('Group Objects should know if the user/favorite/record is not in the list when removing', () => {
+    expect(group.members.remove(2)).to.be.false
+    expect(group.favorites.remove(2)).to.be.false
+    expect(
+      group.records.remove({ date: '2019-01-01', tracks: new UniqueList(1, 2) })
+    ).to.be.false
   })
 })

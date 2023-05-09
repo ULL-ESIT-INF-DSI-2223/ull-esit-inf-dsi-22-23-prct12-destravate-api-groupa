@@ -1,5 +1,6 @@
 import { Coordinate } from './Coordinate.js'
 import { Activity } from './Activity.js'
+import { UniqueList } from './UniqueList.js'
 
 /**
  * Track class.
@@ -51,9 +52,9 @@ export class Track {
 
   /**
    * List of users that have done the track.
-   * @type {number[]}
+   * @type {UniqueList}
    */
-  public users_log: number[] = []
+  public users_log: UniqueList = new UniqueList()
 
   /**
    * Activity to do in the track.

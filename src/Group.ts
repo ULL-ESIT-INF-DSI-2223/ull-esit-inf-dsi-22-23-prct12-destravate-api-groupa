@@ -1,5 +1,6 @@
 import { Stats } from './Stats.js'
 import { UniqueList } from './UniqueList.js'
+import { Entry } from './Entry.js'
 
 /**
  * Class representing a group of users of the app.
@@ -34,6 +35,13 @@ export class Group {
    * @type {UniqueList}
    */
   public favorites: UniqueList = new UniqueList()
+
+  /**
+   * List of records of the group.
+   * @type {UniqueList}
+   * @template {Entry}
+   */
+  public records: UniqueList<Entry> = new UniqueList()
 
   /**
    * Initializes a new instance of the Group class.

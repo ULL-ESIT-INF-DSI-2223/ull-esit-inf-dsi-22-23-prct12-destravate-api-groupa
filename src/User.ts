@@ -1,6 +1,7 @@
 import { Activity } from './Activity.js'
 import { Stats } from './Stats.js'
 import { UniqueList } from './UniqueList.js'
+import { Entry } from './Entry.js'
 
 /**
  * Class representing a user of the app.
@@ -54,6 +55,13 @@ export class User {
    * @type {UniqueList}
    */
   public active_challenges: UniqueList = new UniqueList()
+
+  /**
+   * List of tracks done by the user grouped by date.
+   * @type {UniqueList}
+   * @template {Entry}
+   */
+  public records: UniqueList<Entry> = new UniqueList<Entry>()
 
   /**
    * Initializes a new instance of the User class.
