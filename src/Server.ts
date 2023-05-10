@@ -30,6 +30,7 @@ export class Server {
     this.defineGet()
     this.definePost()
     this.defineDelete()
+    this.definePatch()
   }
 
   /**
@@ -133,6 +134,7 @@ export class Server {
 
     let model
     let url = req.url
+    const query = req.query
     if (req.url.includes('?')) url = req.url.substring(0, req.url.indexOf('?'))
     switch (url) {
       case '/tracks':
@@ -150,9 +152,9 @@ export class Server {
       default:
         break
     }
-    if (model && req.query.id)
+    if (model && query.id)
       model
-        .find({ id: req.query.id })
+        .find({ id: query.id })
         .then((result) => {
           if (result.length === 0)
             res.status(404).json({ message: 'Not found' })
@@ -161,9 +163,9 @@ export class Server {
         .catch((err) => {
           res.status(500).json({ message: err })
         })
-    else if (model && req.query.name)
+    else if (model && query.name)
       model
-        .find({ name: req.query.name })
+        .find({ name: query.name })
         .then((result) => {
           if (result.length === 0)
             res.status(404).json({ message: 'Not found' })
@@ -202,22 +204,22 @@ export class Server {
 
     let document
     let url = req.url
+    const query = req.query
     if (req.url.includes('?')) url = req.url.substring(0, req.url.indexOf('?'))
     switch (url) {
       case '/tracks':
-        let query = req.query
         query.start = JSON.parse(query.start as string)
         query.end = JSON.parse(query.end as string)
         document = new Track(query)
         break
       case '/users':
-        document = new User(req.query)
+        document = new User(query)
         break
       case '/groups':
-        document = new Group(req.query)
+        document = new Group(query)
         break
       case '/challenges':
-        document = new Challenge(req.query)
+        document = new Challenge(query)
         break
       default:
         break
@@ -250,6 +252,7 @@ export class Server {
 
     let model
     let url = req.url
+    const query = req.query
     if (req.url.includes('?')) url = req.url.substring(0, req.url.indexOf('?'))
     switch (url) {
       case '/tracks':
@@ -267,9 +270,9 @@ export class Server {
       default:
         break
     }
-    if (model && req.query.id)
+    if (model && query.id)
       model
-        .deleteMany({ id: req.query.id })
+        .deleteMany({ id: query.id })
         .then((result) => {
           res.status(200).json({ message: 'Deleted', result: result })
         })
@@ -278,7 +281,7 @@ export class Server {
         })
     else if (model)
       model
-        .deleteMany({ name: req.query.name })
+        .deleteMany({ name: query.name })
         .then((result) => {
           res.status(200).json({ message: 'Deleted', result: result })
         })
@@ -293,6 +296,46 @@ export class Server {
    * @param req Request
    * @param res Response
    */
-  private patch = async (req: express.Request, res: express.Response) => {}
+  private patch = async (req: express.Request, res: express.Response) => {
+    connect(dbURL + dbName)
+      .then(() => {
+        console.log('Connected to database ' + dbName)
+      })
+      .catch((err) => {
+        console.log('Error connecting to database: ' + err)
+      })
+
+    let model
+    let url = req.url
+    const query = req.query
+    if (req.url.includes('?')) url = req.url.substring(0, req.url.indexOf('?'))
+    switch (url) {
+      case '/tracks':
+        model = Track
+        break
+      case '/users':
+        model = User
+        break
+      case '/groups':
+        model = Group
+        break
+      case '/challenges':
+        model = Challenge
+        break
+      default:
+        break
+    }
+    if (model && query.id)
+      model
+        .findOneAndUpdate({ id: query.id }, query, { new: true })
+        .then((result) => {
+          if (!result) res.status(404).json({ message: 'Not found' })
+          else res.status(200).json({ message: 'Updated', result: result })
+        })
+        .catch((err) => {
+          res.status(500).json({ message: err })
+        })
+    else res.status(500).json({ message: 'Bad parameters' })
+  }
 }
 new Server().start(3000)

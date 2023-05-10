@@ -14,6 +14,7 @@ export const TrackSchema = new Schema<TrackInterface>({
   id: {
     type: Number,
     required: true,
+    unique: true,
   },
   name: {
     type: String,
@@ -62,6 +63,7 @@ export const UserSchema = new Schema<UserInterface>({
   id: {
     type: Number,
     required: true,
+    unique: true,
   },
   name: {
     type: String,
@@ -110,6 +112,7 @@ export const GroupSchema = new Schema<GroupInterface>({
   id: {
     type: Number,
     required: true,
+    unique: true,
   },
   name: {
     type: String,
@@ -149,6 +152,7 @@ export const ChallengeSchema = new Schema<ChallengeInterface>({
   id: {
     type: Number,
     required: true,
+    unique: true,
   },
   name: {
     type: String,

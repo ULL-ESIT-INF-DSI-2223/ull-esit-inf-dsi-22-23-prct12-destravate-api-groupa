@@ -77,7 +77,7 @@ export class Group implements GroupInterface {
    * @returns {UniqueList} Ranking of the group.
    */
   public get ranking(): UniqueList {
-    let ranking = new UniqueList()
+    const ranking = new UniqueList()
     const distances: { [id: number]: number } = {}
     for (const record of this.records.values) {
       for (const user of record.users.values) {
