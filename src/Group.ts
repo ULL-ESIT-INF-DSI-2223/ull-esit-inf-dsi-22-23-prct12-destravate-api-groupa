@@ -1,6 +1,6 @@
 import { Stats } from './Stats.js'
 import { UniqueList } from './UniqueList.js'
-import { Entry } from './Entry.js'
+import { ExtendedEntry } from './Entry.js'
 
 /**
  * Interface representing a group of users of the app.
@@ -10,8 +10,9 @@ export interface GroupInterface {
   name: string
   members: UniqueList
   stats: Stats
+  ranking: UniqueList
   favorites: UniqueList
-  records: UniqueList<Entry>
+  records: UniqueList<ExtendedEntry>
 }
 
 /**
@@ -51,9 +52,9 @@ export class Group implements GroupInterface {
   /**
    * List of records of the group.
    * @type {UniqueList}
-   * @template {Entry}
+   * @template {ExtendedEntry}
    */
-  public records: UniqueList<Entry> = new UniqueList()
+  public records: UniqueList<ExtendedEntry> = new UniqueList()
 
   /**
    * Initializes a new instance of the Group class.
@@ -69,5 +70,25 @@ export class Group implements GroupInterface {
       monthly: { km: 0, slope: 0 },
       yearly: { km: 0, slope: 0 },
     }
+  }
+
+  /**
+   * Gets the ranking of the group based on the records.
+   * @returns {UniqueList} Ranking of the group.
+   */
+  public get ranking(): UniqueList {
+    let ranking = new UniqueList()
+    const distances: { [id: number]: number } = {}
+    for (const record of this.records.values) {
+      for (const user of record.users.values) {
+        distances[user] = distances[user] || 0 + record.km
+      }
+    }
+    const sorted = Object.keys(distances).sort(
+      (a, b) => distances[b] - distances[a]
+    )
+    for (const id of sorted)
+      if (this.members.values.includes(parseInt(id))) ranking.add(parseInt(id))
+    return ranking
   }
 }

@@ -88,7 +88,7 @@ export const UserSchema = new Schema<UserInterface>({
     type: Array,
     required: false,
   },
-  active_challenges: {
+  challenges: {
     type: Array,
     required: false,
   },

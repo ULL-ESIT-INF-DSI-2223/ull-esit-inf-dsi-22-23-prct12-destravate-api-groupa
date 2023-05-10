@@ -142,18 +142,18 @@ describe('Destravate app tests', () => {
       expect(user.favorites.values).to.not.include(1)
     })
     it('User Objects should have a list of active challenges', () => {
-      expect(user.active_challenges.values).to.be.a('array')
-      expect(user.active_challenges.values).to.have.lengthOf(0)
+      expect(user.challenges.values).to.be.a('array')
+      expect(user.challenges.values).to.have.lengthOf(0)
     })
     it('User Objects should be able to add active challenges', () => {
-      user.active_challenges.add(1)
-      expect(user.active_challenges.values).to.have.lengthOf(1)
-      expect(user.active_challenges.values).to.include(1)
+      user.challenges.add(1)
+      expect(user.challenges.values).to.have.lengthOf(1)
+      expect(user.challenges.values).to.include(1)
     })
     it('User Objects should be able to remove active challenges', () => {
-      user.active_challenges.remove(1)
-      expect(user.active_challenges.values).to.have.lengthOf(0)
-      expect(user.active_challenges.values).to.not.include(1)
+      user.challenges.remove(1)
+      expect(user.challenges.values).to.have.lengthOf(0)
+      expect(user.challenges.values).to.not.include(1)
     })
     it('User Objects should have a record of the tracks done', () => {
       expect(user.records.values).to.be.a('array')
@@ -173,8 +173,8 @@ describe('Destravate app tests', () => {
       expect(user.groups.add(1)).to.be.false
       user.favorites.add(1)
       expect(user.favorites.add(1)).to.be.false
-      user.active_challenges.add(1)
-      expect(user.active_challenges.add(1)).to.be.false
+      user.challenges.add(1)
+      expect(user.challenges.add(1)).to.be.false
       user.records.add({ date: '2019-01-01', tracks: new UniqueList(1, 2, 3) })
       expect(
         user.records.add({
@@ -187,7 +187,7 @@ describe('Destravate app tests', () => {
       expect(user.friends.remove(2)).to.be.false
       expect(user.groups.remove(2)).to.be.false
       expect(user.favorites.remove(2)).to.be.false
-      expect(user.active_challenges.remove(2)).to.be.false
+      expect(user.challenges.remove(2)).to.be.false
       expect(
         user.records.remove({
           date: '2019-01-01',
@@ -254,10 +254,20 @@ describe('Destravate app tests', () => {
       expect(group.records.values).to.have.lengthOf(0)
     })
     it('Group Objects should be able to add records', () => {
-      group.records.add({ date: '2019-01-01', tracks: new UniqueList(1, 2, 3) })
+      group.records.add({
+        date: '2019-01-01',
+        tracks: new UniqueList(1, 2, 3),
+        users: new UniqueList(1, 2, 3),
+        km: 10,
+      })
       expect(group.records.values).to.have.lengthOf(1)
       expect(group.records.values).to.be.deep.equal([
-        { date: '2019-01-01', tracks: new UniqueList(1, 2, 3) },
+        {
+          date: '2019-01-01',
+          tracks: new UniqueList(1, 2, 3),
+          users: new UniqueList(1, 2, 3),
+          km: 10,
+        },
       ])
     })
     it('Group Objects should know if the user/favorite/record is in the list when adding', () => {
@@ -265,11 +275,18 @@ describe('Destravate app tests', () => {
       expect(group.members.add(1)).to.be.false
       group.favorites.add(1)
       expect(group.favorites.add(1)).to.be.false
-      group.records.add({ date: '2019-01-01', tracks: new UniqueList(1, 2, 3) })
+      group.records.add({
+        date: '2019-01-01',
+        tracks: new UniqueList(1, 2, 3),
+        users: new UniqueList(1, 2, 3),
+        km: 10,
+      })
       expect(
         group.records.add({
           date: '2019-01-01',
           tracks: new UniqueList(1, 2, 3),
+          users: new UniqueList(1, 2, 3),
+          km: 10,
         })
       ).to.be.false
     })
@@ -280,8 +297,14 @@ describe('Destravate app tests', () => {
         group.records.remove({
           date: '2019-01-01',
           tracks: new UniqueList(1, 2),
+          users: new UniqueList(1, 2),
+          km: 10,
         })
       ).to.be.false
+    })
+    it('Group Objects should have a ranking', () => {
+      expect(group.ranking.values).to.be.a('array')
+      expect(group.ranking.values).to.have.lengthOf(2)
     })
   })
 

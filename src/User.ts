@@ -14,7 +14,7 @@ export interface UserInterface {
   groups: UniqueList
   stats: Stats
   favorites: UniqueList
-  active_challenges: UniqueList
+  challenges: UniqueList
   records: UniqueList<Entry>
 }
 
@@ -69,7 +69,7 @@ export class User implements UserInterface {
    * List of active challenges of the user.
    * @type {UniqueList}
    */
-  public active_challenges: UniqueList = new UniqueList()
+  public challenges: UniqueList = new UniqueList()
 
   /**
    * List of tracks done by the user grouped by date.

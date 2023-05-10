@@ -16,5 +16,13 @@ export type Entry = {
    * List of tracks done in that date.
    * @type {UniqueList}
    */
-  tracks: UniqueList<number>
+  tracks: UniqueList
+}
+
+/**
+ * A class that stores an extended entry of a record in the app.
+ */
+export type ExtendedEntry = Entry & {
+  users: UniqueList
+  km: number
 }
