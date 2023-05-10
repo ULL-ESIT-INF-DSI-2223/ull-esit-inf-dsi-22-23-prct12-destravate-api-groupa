@@ -2,7 +2,7 @@ import express from 'express'
 import { Server as HttpServer } from 'http'
 import { connect } from 'mongoose'
 
-import { Track, User, Group, Challenge } from './Schemas.js'
+import { Track, User, Group, Challenge } from './Models.js'
 
 const dbURL = 'mongodb://localhost:27017'
 const dbName = '/Destravate'

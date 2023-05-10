@@ -7,6 +7,9 @@ import { UserInterface } from './User.js'
 import { GroupInterface } from './Group.js'
 import { ChallengeInterface } from './Challenge.js'
 
+/**
+ * Schema representing a track of the app.
+ */
 export const TrackSchema = new Schema<TrackInterface>({
   id: {
     type: Number,
@@ -47,8 +50,14 @@ export const TrackSchema = new Schema<TrackInterface>({
   },
 })
 
+/**
+ * Model for the Track schema.
+ */
 export const Track = model<TrackInterface>('Track', TrackSchema)
 
+/**
+ * Schema representing a user of the app.
+ */
 export const UserSchema = new Schema<UserInterface>({
   id: {
     type: Number,
@@ -89,8 +98,14 @@ export const UserSchema = new Schema<UserInterface>({
   },
 })
 
+/**
+ * Model for the User schema.
+ */
 export const User = model<UserInterface>('User', UserSchema)
 
+/**
+ * Schema representing a group of the app.
+ */
 export const GroupSchema = new Schema<GroupInterface>({
   id: {
     type: Number,
@@ -118,8 +133,14 @@ export const GroupSchema = new Schema<GroupInterface>({
   },
 })
 
+/**
+ * Model for the Group schema.
+ */
 export const Group = model<GroupInterface>('Group', GroupSchema)
 
+/**
+ * Schema representing a challenge of the app.
+ */
 export const ChallengeSchema = new Schema<ChallengeInterface>({
   id: {
     type: Number,
@@ -144,4 +165,7 @@ export const ChallengeSchema = new Schema<ChallengeInterface>({
   },
 })
 
+/**
+ * Model for the Challenge schema.
+ */
 export const Challenge = model<ChallengeInterface>('Challenge', ChallengeSchema)
