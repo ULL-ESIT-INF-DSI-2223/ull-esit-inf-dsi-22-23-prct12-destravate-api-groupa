@@ -1,6 +1,5 @@
 import express from 'express'
 import { Server as HttpServer } from 'http'
-import { MongoClient } from 'mongodb'
 import { connect } from 'mongoose'
 
 import { Track, User, Group, Challenge } from './Schemas.js'
@@ -37,6 +36,12 @@ export class Server {
     for (const route of routes) {
       this.app.get(route, (req, res) => {
         this.get(req, res)
+          .then(() => {
+            console.log('Get request completed')
+          })
+          .catch((err) => {
+            console.log('Error in get request: ' + err)
+          })
       })
     }
   }
@@ -45,6 +50,12 @@ export class Server {
     for (const route of routes) {
       this.app.post(route, (req, res) => {
         this.post(req, res)
+          .then(() => {
+            console.log('Post request completed')
+          })
+          .catch((err) => {
+            console.log('Error in post request: ' + err)
+          })
       })
     }
   }
@@ -53,6 +64,12 @@ export class Server {
     for (const route of routes) {
       this.app.delete(route, (req, res) => {
         this.delete(req, res)
+          .then(() => {
+            console.log('Delete request completed')
+          })
+          .catch((err) => {
+            console.log('Error in delete request: ' + err)
+          })
       })
     }
   }
@@ -61,6 +78,12 @@ export class Server {
     for (const route of routes) {
       this.app.patch(route, (req, res) => {
         this.patch(req, res)
+          .then(() => {
+            console.log('Patch request completed')
+          })
+          .catch((err) => {
+            console.log('Error in patch request: ' + err)
+          })
       })
     }
   }

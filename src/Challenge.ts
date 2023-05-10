@@ -1,6 +1,5 @@
 import { Activity } from './Activity.js'
 import { UniqueList } from './UniqueList.js'
-import { Track } from './Track.js'
 
 /**
  * Interface representing a challenge of the app.

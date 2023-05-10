@@ -1,4 +1,4 @@
-import { Document, connect, model, Schema } from 'mongoose'
+import { model, Schema } from 'mongoose'
 
 import { Activity } from './Activity.js'
 
