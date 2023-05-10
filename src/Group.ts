@@ -3,9 +3,21 @@ import { UniqueList } from './UniqueList.js'
 import { Entry } from './Entry.js'
 
 /**
+ * Interface representing a group of users of the app.
+ */
+export interface GroupInterface {
+  id: number
+  name: string
+  members: UniqueList
+  stats: Stats
+  favorites: UniqueList
+  records: UniqueList<Entry>
+}
+
+/**
  * Class representing a group of users of the app.
  */
-export class Group {
+export class Group implements GroupInterface {
   /**
    * Unique id of the group.
    * @type {number}

@@ -4,9 +4,24 @@ import { UniqueList } from './UniqueList.js'
 import { Entry } from './Entry.js'
 
 /**
+ * Interface representing a user of the app.
+ */
+export interface UserInterface {
+  id: number
+  name: string
+  activity: Activity
+  friends: UniqueList
+  groups: UniqueList
+  stats: Stats
+  favorites: UniqueList
+  active_challenges: UniqueList
+  records: UniqueList<Entry>
+}
+
+/**
  * Class representing a user of the app.
  */
-export class User {
+export class User implements UserInterface {
   /**
    * Unique id of the user.
    * @type {number}

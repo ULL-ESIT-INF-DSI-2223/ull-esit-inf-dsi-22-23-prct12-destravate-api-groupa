@@ -3,9 +3,20 @@ import { UniqueList } from './UniqueList.js'
 import { Track } from './Track.js'
 
 /**
+ * Interface representing a challenge of the app.
+ */
+export interface ChallengeInterface {
+  id: number
+  name: string
+  activity: Activity
+  tracks: UniqueList
+  users: UniqueList
+}
+
+/**
  * Class representing a challenge of the app.
  */
-export class Challenge {
+export class Challenge implements ChallengeInterface {
   /**
    * Unique id of the challenge.
    * @type {number}

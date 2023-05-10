@@ -8,6 +8,7 @@ import { Track } from '../src/Track.js'
 import { User } from '../src/User.js'
 import { Group } from '../src/Group.js'
 import { Challenge } from '../src/Challenge.js'
+import { Server } from '../src/Server.js'
 
 describe('Destravate app tests', () => {
   describe('Track class tests', () => {

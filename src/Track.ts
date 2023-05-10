@@ -3,6 +3,21 @@ import { Activity } from './Activity.js'
 import { UniqueList } from './UniqueList.js'
 
 /**
+ * Interface representing a track of the app.
+ */
+export interface TrackInterface {
+  id: number
+  name: string
+  start: Coordinate
+  end: Coordinate
+  distance: number
+  slope: number
+  users_log: UniqueList
+  activity: Activity
+  score: number
+}
+
+/**
  * Track class.
  * A track is a route that a user can do. It is defined by:
  *  - An unique id.
