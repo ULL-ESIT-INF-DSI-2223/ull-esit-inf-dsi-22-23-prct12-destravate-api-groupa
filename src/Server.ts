@@ -32,6 +32,9 @@ export class Server {
     this.defineDelete()
   }
 
+  /**
+   * Defines the get requests of the server.
+   */
   private defineGet() {
     for (const route of routes) {
       this.app.get(route, (req, res) => {
@@ -46,6 +49,9 @@ export class Server {
     }
   }
 
+  /**
+   * Defines the post requests of the server.
+   */
   private definePost() {
     for (const route of routes) {
       this.app.post(route, (req, res) => {
@@ -60,6 +66,9 @@ export class Server {
     }
   }
 
+  /**
+   * Defines the delete requests of the server.
+   */
   private defineDelete() {
     for (const route of routes) {
       this.app.delete(route, (req, res) => {
@@ -74,6 +83,9 @@ export class Server {
     }
   }
 
+  /**
+   * Defines the patch requests of the server.
+   */
   private definePatch() {
     for (const route of routes) {
       this.app.patch(route, (req, res) => {
@@ -105,6 +117,11 @@ export class Server {
     this.server.close()
   }
 
+  /**
+   * Method to handle get requests.
+   * @param req Request
+   * @param res Response
+   */
   private get = async (req: express.Request, res: express.Response) => {
     connect(dbURL + dbName)
       .then(() => {
@@ -144,6 +161,17 @@ export class Server {
         .catch((err) => {
           res.status(500).json({ message: err })
         })
+    else if (model && req.query.name)
+      model
+        .find({ name: req.query.name })
+        .then((result) => {
+          if (result.length === 0)
+            res.status(404).json({ message: 'Not found' })
+          else res.status(200).json({ message: 'Found', result: result })
+        })
+        .catch((err) => {
+          res.status(500).json({ message: err })
+        })
     else if (model)
       model
         .find()
@@ -158,6 +186,11 @@ export class Server {
     else res.status(500).json({ message: 'Bad parameters' })
   }
 
+  /**
+   * Method to handle post requests.
+   * @param req Request
+   * @param res Response
+   */
   private post = async (req: express.Request, res: express.Response) => {
     connect(dbURL + dbName)
       .then(() => {
@@ -201,6 +234,11 @@ export class Server {
     else res.status(500).json({ message: 'Bad parameters' })
   }
 
+  /**
+   * Method to handle delete requests.
+   * @param req Request
+   * @param res Response
+   */
   private delete = async (req: express.Request, res: express.Response) => {
     connect(dbURL + dbName)
       .then(() => {
@@ -229,9 +267,18 @@ export class Server {
       default:
         break
     }
-    if (model)
+    if (model && req.query.id)
       model
-        .deleteMany(req.query)
+        .deleteMany({ id: req.query.id })
+        .then((result) => {
+          res.status(200).json({ message: 'Deleted', result: result })
+        })
+        .catch((err) => {
+          res.status(500).json({ message: err })
+        })
+    else if (model)
+      model
+        .deleteMany({ name: req.query.name })
         .then((result) => {
           res.status(200).json({ message: 'Deleted', result: result })
         })
@@ -241,6 +288,11 @@ export class Server {
     else res.status(500).json({ message: 'Bad parameters' })
   }
 
+  /**
+   * Method to handle patch requests.
+   * @param req Request
+   * @param res Response
+   */
   private patch = async (req: express.Request, res: express.Response) => {}
 }
 new Server().start(3000)

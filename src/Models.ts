@@ -123,6 +123,10 @@ export const GroupSchema = new Schema<GroupInterface>({
     type: Array,
     required: false,
   },
+  ranking: {
+    type: Array,
+    required: false,
+  },
   favorites: {
     type: Array,
     required: false,
