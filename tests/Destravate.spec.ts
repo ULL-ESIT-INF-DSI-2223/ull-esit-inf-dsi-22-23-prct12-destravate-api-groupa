@@ -13,7 +13,7 @@ import { Server } from '../src/Server.js'
 let server: Server
 before(async function () {
   server = new Server()
-  await server.start(8080)
+  await server.start()
 })
 
 describe('Destravate app tests', () => {
