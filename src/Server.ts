@@ -161,9 +161,7 @@ export class Server {
       model
         .findOne({ id: parseInt(req.query.id as string) })
         .then((result) => {
-          if (result.length === 0)
-            res.status(404).json({ message: 'Not found' })
-          else res.status(200).json({ message: 'Found', result: result })
+          this.searchResult(result, res)
         })
         .catch((err) => {
           res.status(500).json({ message: err })
@@ -172,9 +170,7 @@ export class Server {
       model
         .find({ name: req.query.name })
         .then((result) => {
-          if (result.length === 0)
-            res.status(404).json({ message: 'Not found' })
-          else res.status(200).json({ message: 'Found', result: result })
+          this.searchResult(result, res)
         })
         .catch((err) => {
           res.status(500).json({ message: err })
@@ -183,9 +179,7 @@ export class Server {
       model
         .find()
         .then((result) => {
-          if (result.length === 0)
-            res.status(404).json({ message: 'Not found' })
-          else res.status(200).json({ message: 'Found', result: result })
+          this.searchResult(result, res)
         })
         .catch((err) => {
           res.status(500).json({ message: err })
@@ -209,8 +203,7 @@ export class Server {
 
     let document
     let url = req.url
-    let is_group = false
-    const body = req.body
+    let body = req.body
     if (req.url.includes('?')) url = req.url.substring(0, req.url.indexOf('?'))
     switch (url) {
       case '/tracks':
@@ -220,8 +213,8 @@ export class Server {
         document = new UserModel(body)
         break
       case '/groups':
+        body = this.updateBody(body)
         document = new GroupModel(body)
-        is_group = true
         break
       case '/challenges':
         document = new ChallengeModel(body)
@@ -230,15 +223,6 @@ export class Server {
         break
     }
     if (document) {
-      if (document.records && is_group) {
-        const { id, name, members } = document
-        const group = new Group(id, name, ...members)
-        for (const record of body.records)
-          record.users = new UniqueList(...record.users)
-        group.records = new UniqueList<ExtendedEntry>(...body.records)
-        const ranking = group.ranking.values
-        document.ranking = ranking
-      }
       document
         .save()
         .then((result) => {
@@ -320,8 +304,7 @@ export class Server {
 
     let model
     let url = req.url
-    const body = req.body
-    let is_group = false
+    let body = req.body
     if (req.url.includes('?')) url = req.url.substring(0, req.url.indexOf('?'))
     switch (url) {
       case '/tracks':
@@ -332,7 +315,7 @@ export class Server {
         break
       case '/groups':
         model = GroupModel
-        is_group = true
+        body = this.updateBody(body)
         break
       case '/challenges':
         model = ChallengeModel
@@ -340,23 +323,13 @@ export class Server {
       default:
         break
     }
-    if (body.records && is_group) {
-      const { id, name, members } = body
-      const group = new Group(id, name, ...members)
-      for (const record of body.records)
-        record.users = new UniqueList(...record.users)
-      group.records = new UniqueList<ExtendedEntry>(...body.records)
-      const ranking = group.ranking.values
-      body.ranking = ranking
-    }
     if (model && req.query.id)
       model
         .findOneAndUpdate({ id: parseInt(req.query.id as string) }, body, {
           new: true,
         })
         .then((result) => {
-          if (!result) res.status(404).json({ message: 'Not found' })
-          else res.status(200).json({ message: 'Updated', result: result })
+          this.searchResult(result, res)
         })
         .catch((err) => {
           res.status(500).json({ message: err })
@@ -365,12 +338,38 @@ export class Server {
       model
         .findOneAndUpdate({ name: req.query.name }, body, { new: true })
         .then((result) => {
-          if (!result) res.status(404).json({ message: 'Not found' })
-          else res.status(200).json({ message: 'Updated', result: result })
+          this.searchResult(result, res)
         })
         .catch((err) => {
           res.status(500).json({ message: err })
         })
     else res.status(500).json({ message: 'Bad parameters' })
+  }
+
+  /**
+   * Returns a status code depending on the result.
+   * @param result Result of the search
+   * @param res Response
+   */
+  private searchResult(result: any, res: express.Response): void {
+    if (!result) res.status(404).json({ message: 'Not found' })
+    else res.status(200).json({ message: 'Updated', result: result })
+  }
+
+  /**
+   * Updates the document with the new records.
+   * @param document Document to update
+   * @param body Body of the request
+   * @returns Updated document
+   */
+  private updateBody(body: any): any {
+    const { id, name, members } = body
+    const group = new Group(id, name, ...members)
+    for (const record of body.records)
+      record.users = new UniqueList(...record.users)
+    group.records = new UniqueList<ExtendedEntry>(...body.records)
+    const ranking = group.ranking.values
+    body.ranking = ranking
+    return body
   }
 }

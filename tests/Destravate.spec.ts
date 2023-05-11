@@ -1,6 +1,5 @@
 import 'mocha'
 import { expect } from 'chai'
-import { connect, disconnect } from 'mongoose'
 
 import { UniqueList } from '../src/UniqueList.js'
 import { Activity } from '../src/Activity.js'
@@ -11,13 +10,10 @@ import { Group } from '../src/Group.js'
 import { Challenge } from '../src/Challenge.js'
 import { Server } from '../src/Server.js'
 
-const dbURL = 'mongodb://localhost:27017'
-const dbName = '/Destravate'
-
 let server: Server
 before(async function () {
   server = new Server()
-  await server.start()
+  await server.start(8080)
 })
 
 describe('Destravate app tests', () => {
@@ -381,9 +377,7 @@ describe('Destravate app tests', () => {
       expect(challenge.tracks.remove(2)).to.be.false
     })
   })
-  describe('Server class tests', () => {
-    
-  })
+  describe('Server class tests', () => {})
 })
 
 after(async function () {
