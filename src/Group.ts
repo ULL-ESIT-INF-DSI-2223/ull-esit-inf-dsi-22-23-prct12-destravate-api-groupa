@@ -54,7 +54,7 @@ export class Group implements GroupInterface {
    * @type {UniqueList}
    * @template {ExtendedEntry}
    */
-  public records: UniqueList<ExtendedEntry> = new UniqueList()
+  public records: UniqueList<ExtendedEntry> = new UniqueList<ExtendedEntry>()
 
   /**
    * Initializes a new instance of the Group class.
@@ -81,7 +81,8 @@ export class Group implements GroupInterface {
     const distances: { [id: number]: number } = {}
     for (const record of this.records.values) {
       for (const user of record.users.values) {
-        distances[user] = distances[user] || 0 + record.km
+        if (distances[user]) distances[user] += record.km
+        else distances[user] = record.km
       }
     }
     const sorted = Object.keys(distances).sort(

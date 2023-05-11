@@ -1,8 +1,12 @@
 import express from 'express'
 import { Server as HttpServer } from 'http'
-import { connect } from 'mongoose'
+import { connect, disconnect } from 'mongoose'
 
-import { Track, User, Group, Challenge } from './Models.js'
+import { Group } from './Group.js'
+
+import { UniqueList } from './UniqueList.js'
+import { ExtendedEntry } from './Entry.js'
+import { TrackModel, UserModel, GroupModel, ChallengeModel } from './Models.js'
 
 const dbURL = 'mongodb://localhost:27017'
 const dbName = '/Destravate'
@@ -27,6 +31,7 @@ export class Server {
    * Initializes the server of the app.
    */
   public constructor() {
+    this.app.use(express.json())
     this.defineGet()
     this.definePost()
     this.defineDelete()
@@ -105,7 +110,7 @@ export class Server {
    * Starts listening on the specified port
    * @param port Port to listen on
    */
-  public start(port: number) {
+  public start(port = 3030) {
     this.server = this.app.listen(port, () => {
       console.log(`Server listening on port ${port}`)
     })
@@ -115,6 +120,7 @@ export class Server {
    * Shuts down the server
    */
   public stop(): void {
+    disconnect()
     this.server.close()
   }
 
@@ -134,27 +140,26 @@ export class Server {
 
     let model
     let url = req.url
-    const query = req.query
     if (req.url.includes('?')) url = req.url.substring(0, req.url.indexOf('?'))
     switch (url) {
       case '/tracks':
-        model = Track
+        model = TrackModel
         break
       case '/users':
-        model = User
+        model = UserModel
         break
       case '/groups':
-        model = Group
+        model = GroupModel
         break
       case '/challenges':
-        model = Challenge
+        model = ChallengeModel
         break
       default:
         break
     }
-    if (model && query.id)
+    if (model && req.query.id)
       model
-        .find({ id: query.id })
+        .findOne({ id: parseInt(req.query.id as string) })
         .then((result) => {
           if (result.length === 0)
             res.status(404).json({ message: 'Not found' })
@@ -163,9 +168,9 @@ export class Server {
         .catch((err) => {
           res.status(500).json({ message: err })
         })
-    else if (model && query.name)
+    else if (model && req.query.name)
       model
-        .find({ name: query.name })
+        .find({ name: req.query.name })
         .then((result) => {
           if (result.length === 0)
             res.status(404).json({ message: 'Not found' })
@@ -204,27 +209,36 @@ export class Server {
 
     let document
     let url = req.url
-    const query = req.query
+    let is_group = false
+    const body = req.body
     if (req.url.includes('?')) url = req.url.substring(0, req.url.indexOf('?'))
     switch (url) {
       case '/tracks':
-        query.start = JSON.parse(query.start as string)
-        query.end = JSON.parse(query.end as string)
-        document = new Track(query)
+        document = new TrackModel(body)
         break
       case '/users':
-        document = new User(query)
+        document = new UserModel(body)
         break
       case '/groups':
-        document = new Group(query)
+        document = new GroupModel(body)
+        is_group = true
         break
       case '/challenges':
-        document = new Challenge(query)
+        document = new ChallengeModel(body)
         break
       default:
         break
     }
-    if (document)
+    if (document) {
+      if (document.records && is_group) {
+        const { id, name, members } = document
+        const group = new Group(id, name, ...members)
+        for (const record of body.records)
+          record.users = new UniqueList(...record.users)
+        group.records = new UniqueList<ExtendedEntry>(...body.records)
+        const ranking = group.ranking.values
+        document.ranking = ranking
+      }
       document
         .save()
         .then((result) => {
@@ -233,7 +247,7 @@ export class Server {
         .catch((err) => {
           res.status(500).json({ message: err })
         })
-    else res.status(500).json({ message: 'Bad parameters' })
+    } else res.status(500).json({ message: 'Bad parameters' })
   }
 
   /**
@@ -252,36 +266,35 @@ export class Server {
 
     let model
     let url = req.url
-    const query = req.query
     if (req.url.includes('?')) url = req.url.substring(0, req.url.indexOf('?'))
     switch (url) {
       case '/tracks':
-        model = Track
+        model = TrackModel
         break
       case '/users':
-        model = User
+        model = UserModel
         break
       case '/groups':
-        model = Group
+        model = GroupModel
         break
       case '/challenges':
-        model = Challenge
+        model = ChallengeModel
         break
       default:
         break
     }
-    if (model && query.id)
+    if (model && req.query.id)
       model
-        .deleteMany({ id: query.id })
+        .deleteOne({ id: parseInt(req.query.id as string) })
         .then((result) => {
           res.status(200).json({ message: 'Deleted', result: result })
         })
         .catch((err) => {
           res.status(500).json({ message: err })
         })
-    else if (model)
+    else if (model && req.query.name)
       model
-        .deleteMany({ name: query.name })
+        .deleteMany({ name: req.query.name })
         .then((result) => {
           res.status(200).json({ message: 'Deleted', result: result })
         })
@@ -307,27 +320,50 @@ export class Server {
 
     let model
     let url = req.url
-    const query = req.query
+    const body = req.body
+    let is_group = false
     if (req.url.includes('?')) url = req.url.substring(0, req.url.indexOf('?'))
     switch (url) {
       case '/tracks':
-        model = Track
+        model = TrackModel
         break
       case '/users':
-        model = User
+        model = UserModel
         break
       case '/groups':
-        model = Group
+        model = GroupModel
+        is_group = true
         break
       case '/challenges':
-        model = Challenge
+        model = ChallengeModel
         break
       default:
         break
     }
-    if (model && query.id)
+    if (body.records && is_group) {
+      const { id, name, members } = body
+      const group = new Group(id, name, ...members)
+      for (const record of body.records)
+        record.users = new UniqueList(...record.users)
+      group.records = new UniqueList<ExtendedEntry>(...body.records)
+      const ranking = group.ranking.values
+      body.ranking = ranking
+    }
+    if (model && req.query.id)
       model
-        .findOneAndUpdate({ id: query.id }, query, { new: true })
+        .findOneAndUpdate({ id: parseInt(req.query.id as string) }, body, {
+          new: true,
+        })
+        .then((result) => {
+          if (!result) res.status(404).json({ message: 'Not found' })
+          else res.status(200).json({ message: 'Updated', result: result })
+        })
+        .catch((err) => {
+          res.status(500).json({ message: err })
+        })
+    else if (model && req.query.name)
+      model
+        .findOneAndUpdate({ name: req.query.name }, body, { new: true })
         .then((result) => {
           if (!result) res.status(404).json({ message: 'Not found' })
           else res.status(200).json({ message: 'Updated', result: result })
@@ -338,4 +374,3 @@ export class Server {
     else res.status(500).json({ message: 'Bad parameters' })
   }
 }
-new Server().start(3000)

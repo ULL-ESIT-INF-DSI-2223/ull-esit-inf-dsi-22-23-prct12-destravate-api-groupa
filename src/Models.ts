@@ -54,7 +54,7 @@ export const TrackSchema = new Schema<TrackInterface>({
 /**
  * Model for the Track schema.
  */
-export const Track = model<TrackInterface>('Track', TrackSchema)
+export const TrackModel = model<TrackInterface>('Track', TrackSchema)
 
 /**
  * Schema representing a user of the app.
@@ -103,7 +103,7 @@ export const UserSchema = new Schema<UserInterface>({
 /**
  * Model for the User schema.
  */
-export const User = model<UserInterface>('User', UserSchema)
+export const UserModel = model<UserInterface>('User', UserSchema)
 
 /**
  * Schema representing a group of the app.
@@ -143,7 +143,7 @@ export const GroupSchema = new Schema<GroupInterface>({
 /**
  * Model for the Group schema.
  */
-export const Group = model<GroupInterface>('Group', GroupSchema)
+export const GroupModel = model<GroupInterface>('Group', GroupSchema)
 
 /**
  * Schema representing a challenge of the app.
@@ -176,4 +176,7 @@ export const ChallengeSchema = new Schema<ChallengeInterface>({
 /**
  * Model for the Challenge schema.
  */
-export const Challenge = model<ChallengeInterface>('Challenge', ChallengeSchema)
+export const ChallengeModel = model<ChallengeInterface>(
+  'Challenge',
+  ChallengeSchema
+)

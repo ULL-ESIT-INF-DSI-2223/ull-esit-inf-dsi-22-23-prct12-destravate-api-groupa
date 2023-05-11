@@ -1,5 +1,6 @@
 import 'mocha'
 import { expect } from 'chai'
+import { connect, disconnect } from 'mongoose'
 
 import { UniqueList } from '../src/UniqueList.js'
 import { Activity } from '../src/Activity.js'
@@ -9,6 +10,15 @@ import { User } from '../src/User.js'
 import { Group } from '../src/Group.js'
 import { Challenge } from '../src/Challenge.js'
 import { Server } from '../src/Server.js'
+
+const dbURL = 'mongodb://localhost:27017'
+const dbName = '/Destravate'
+
+let server: Server
+before(async function () {
+  server = new Server()
+  await server.start()
+})
 
 describe('Destravate app tests', () => {
   describe('Track class tests', () => {
@@ -303,6 +313,12 @@ describe('Destravate app tests', () => {
       ).to.be.false
     })
     it('Group Objects should have a ranking', () => {
+      group.records.add({
+        date: '2023-01-01',
+        tracks: new UniqueList(1, 3),
+        users: new UniqueList(1),
+        km: 250,
+      })
       expect(group.ranking.values).to.be.a('array')
       expect(group.ranking.values).to.have.lengthOf(2)
     })
@@ -365,5 +381,11 @@ describe('Destravate app tests', () => {
       expect(challenge.tracks.remove(2)).to.be.false
     })
   })
-  describe('Server class tests', () => {})
+  describe('Server class tests', () => {
+    
+  })
+})
+
+after(async function () {
+  await server.stop()
 })
