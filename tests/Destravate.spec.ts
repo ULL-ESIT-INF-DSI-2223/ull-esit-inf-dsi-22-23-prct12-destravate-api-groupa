@@ -25,6 +25,7 @@ let challenge_id = ''
 
 let server: Server
 before(async function () {
+  this.timeout(0)
   server = new Server()
   await server.start(process.env.PORT || 3000)
   await connect(process.env.MONGODB_URL!)
@@ -533,6 +534,7 @@ describe('Destravate app tests', () => {
 })
 
 after(async function () {
+  this.timeout(0)
   await server.stop()
   await disconnect()
 })
