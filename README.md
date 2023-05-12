@@ -426,7 +426,14 @@ export class Server {
       res.status(501).send()
     })
   }
+```
+En primera instancia, además de añadir las importaciones necesarias, se define una constante llamada `routes` que contiene las rutas que se utilizarán en el servidor: `/tracks`, `/tracks/:id`, `/users`, `/users/:id`, `/groups`, `/groups/:id`, `/challenges` y `/challenges/:id`. 
 
+Se inicializa el atributo `server` que almacenará el servidor HTTP y el atributo `app` que almacenará la aplicación Express. Se define el constructor de la clase `Server` que inicializa la aplicación Express, define las rutas y define los métodos HTTP que se utilizarán en el servidor. En `this.app.use(express.json())` se define para que el servidor utilice JSON como formato de intercambio de datos. 
+
+En `this.defineGet()`, `this.definePost()`, `this.defineDelete()` y `this.definePatch()` se definen los métodos HTTP GET, POST, DELETE y PATCH, respectivamente. En `this.app.all('*', (_, res) => { res.status(501).send() })` se define que si se hace una petición a una ruta que no existe, se devuelva un código de estado 501.
+
+```TypeScript
   private defineGet() {
     for (const route of routes) {
       this.app.get(route, (req, res) => {
@@ -482,7 +489,11 @@ export class Server {
       })
     }
   }
+```
+Ahora se han definido los cuatro métodos: `defineGet()`, `definePost()`, `defineDelete()` y `definePatch()`. Cada uno de ellos recorre la constante `routes` y define un método HTTP para cada ruta. Por ejemplo, `this.app.get(route, (req, res) => { this.get(req, res) ... })` define un método HTTP GET para cada ruta. En cada método HTTP se llama a un método privado que se encarga de realizar la operación correspondiente. Cada unno de estos métodos tiene exactamente la misma estructura, solo que cambia el método HTTP que se define.
 
+
+```TypeScript
   public start(port: number | string): void {
     this.server = this.app.listen(port, () => {
       console.log(`Server listening on port ${port}`)
@@ -497,7 +508,10 @@ export class Server {
     this.server.close()
   }
   /* c8 ignore stop */
+```
+Se inicializa el servidor HTTP en el puerto especificado y se muestra un mensaje por consola indicando que el servidor se ha iniciado. Se define un método `stop()` que se encarga de cerrar el servidor y desconectar la base de datos.
 
+```TypeScript
   private get = async (req: express.Request, res: express.Response) => {
     connect(process.env.MONGODB_URL!)
       .then(() => {
@@ -555,7 +569,14 @@ export class Server {
         console.log('Error connecting to database: ' + err)
       })
   }
+```
+Este método se encarga de realizar una operación GET en la base de datos. En primer lugar, se conecta a la base de datos. A continuación, se comprueba la ruta a la que se ha hecho la petición y se asigna el modelo correspondiente a la variable `model`. 
 
+Si la ruta es `/tracks`, se asigna el modelo `TrackModel`, si la ruta es `/users`, se asigna el modelo `UserModel`, si la ruta es `/groups`, se asigna el modelo `GroupModel` y si la ruta es `/challenges`, se asigna el modelo `ChallengeModel`. 
+
+Si la ruta no es ninguna de las anteriores, se devuelve un código de estado 400. Si la ruta es `/tracks/:id`, se busca un documento en la base de datos con el identificador especificado en la ruta. Si la ruta es `/tracks?name=...`, se busca un documento en la base de datos con el nombre especificado en la ruta. Si la ruta es `/tracks`, se buscan todos los documentos de la base de datos. En cada caso, se llama al método `searchResult()` que se encarga de devolver el resultado de la búsqueda. 
+
+```TypeScript
   private post = async (req: express.Request, res: express.Response) => {
     connect(process.env.MONGODB_URL!)
       .then(() => {
@@ -677,7 +698,17 @@ export class Server {
       { multi: true, runValidators: true }
     )
   }
+```
 
+Este método se encarga de realizar una operación POST en la base de datos. En primer lugar, se conecta a la base de datos. A continuación, se comprueba la ruta a la que se ha hecho la petición y se asigna el modelo correspondiente a la variable `model`. 
+
+Si la ruta es `/tracks`, se asigna el modelo `TrackModel`, si la ruta es `/users`, se asigna el modelo `UserModel`, si la ruta es `/groups`, se asigna el modelo `GroupModel` y si la ruta es `/challenges`, se asigna el modelo `ChallengeModel`. Si la ruta no es ninguna de las anteriores, se devuelve un código de estado 400. Si la ruta es `/tracks`, se crea un documento de tipo `TrackModel` con el cuerpo de la petición y se llama al método `createReferencesToTrack()` que se encarga de crear las referencias a los usuarios que han realizado la actividad física. 
+
+Si la ruta es `/users`, se crea un documento de tipo `UserModel` con el cuerpo de la petición y se llama al método `createReferencesToUser()` que se encarga de crear las referencias a los grupos, desafíos y pistas en los que ha participado el usuario. Si la ruta es `/groups`, se crea un documento de tipo `GroupModel` con el cuerpo de la petición y se llama al método `createReferencesToGroup()` que se encarga de crear las referencias a los usuarios que pertenecen al grupo. 
+
+Si la ruta es `/challenges`, se crea un documento de tipo `ChallengeModel` con el cuerpo de la petición y se llama al método `createReferencesToChallenge()` que se encarga de crear las referencias a los usuarios que participan en el desafío. En cada caso, se llama al método `save()` que se encarga de guardar el documento en la base de datos. 
+
+```TypeScript
   private delete = async (req: express.Request, res: express.Response) => {
     connect(process.env.MONGODB_URL!)
       .then(() => {
@@ -779,7 +810,17 @@ export class Server {
       })
     })
   }
+```
+Este método se encarga de realizar una operación DELETE en la base de datos. En primer lugar, se conecta a la base de datos. A continuación, se comprueba la ruta a la que se ha hecho la petición y se asigna el modelo correspondiente a la variable `model`. 
 
+Si la ruta es `/tracks`, se asigna el modelo `TrackModel`, si la ruta es `/users`, se asigna el modelo `UserModel`, si la ruta es `/groups`, se asigna el modelo `GroupModel` y si la ruta es `/challenges`, se asigna el modelo `ChallengeModel`. 
+
+Si la ruta no es ninguna de las anteriores, se devuelve un código de estado 400. Si la ruta es `/tracks/:id`, se busca un documento en la base de datos con el identificador especificado en la ruta. Si la ruta es `/tracks?name=...`, se busca un documento en la base de datos con el nombre especificado en la ruta. Si la ruta es `/tracks`, se buscan todos los documentos de la base de datos. 
+
+En cada caso, se llama al método `searchResult()` que se encarga de devolver el resultado de la búsqueda. El método privado `deleteReferencesFromUser` se encarga de eliminar las referencias a un usuario que se ha eliminado de la base de datos. Obtiene los documentos de tipo `TrackModel`, `UserModel`, `GroupModel` y `ChallengeModel` que contienen al usuario y elimina las referencias.
+
+
+```TypeScript
   private patch = async (req: express.Request, res: express.Response) => {
     connect(process.env.MONGODB_URL!)
       .then(() => {
@@ -836,12 +877,26 @@ export class Server {
         console.log('Error connecting to database: ' + err)
       })
   }
+```
+Este método se encarga de realizar una operación PATCH en la base de datos. En primer lugar, se conecta a la base de datos. A continuación, se comprueba la ruta a la que se ha hecho la petición y se asigna el modelo correspondiente a la variable `model`. 
+
+Si la ruta es `/tracks`, se asigna el modelo `TrackModel`, si la ruta es `/users`, se asigna el modelo `UserModel`, si la ruta es `/groups`, se asigna el modelo `GroupModel` y si la ruta es `/challenges`, se asigna el modelo `ChallengeModel`. 
+
+Si la ruta no es ninguna de las anteriores, se devuelve un código de estado 400. Si la ruta es `/tracks/:id`, se busca un documento en la base de datos con el identificador especificado en la ruta. Si la ruta es `/tracks?name=...`, se busca un documento en la base de datos con el nombre especificado en la ruta. Si la ruta es `/tracks`, se buscan todos los documentos de la base de datos. 
+
+En cada caso, se llama al método `searchResult()` que se encarga de devolver el resultado de la búsqueda. Si la ruta es `/groups`, se llama al método `updateRanking()` que se encarga de actualizar el ranking del grupo. 
+
+```TypeScript
 
   private searchResult(result: any, res: express.Response): void {
     if (!result) res.status(404).json({ message: 'Not found' })
     else res.status(200).json({ message: 'Found', result: result })
   }
+```
 
+El método privado `searchResult()` se encarga de devolver el resultado de la búsqueda. Si el resultado es nulo, se devuelve un código de estado 404 y mostrando un mensaje de que no se ha encontrado. Si el resultado no es nulo, se devuelve un código de estado 200, comprobando que se ha encontrado.
+
+```TypeScript
   private updateRanking(body: any): any {
     const { id, name, users } = body
     const group = new Group(id, name, ...users)
@@ -1087,430 +1142,10 @@ La función `main()` es la función principal del programa y se llama para inici
 
 ## Pruebas y cubrimiento
 
-Han sido realiazadas pruebas con mocha y chai con el fin de verificar el correcto funcionamiento de todos y cada uno de los ficheros del proyecto. A continuación se muestras las pruebas realizadas que están todas en un mismo fichero llamado `Destravate.spec.ts`:
+Han sido realiazadas pruebas con `mocha` y `chai`, con el fin de verificar el correcto funcionamiento de todos y cada uno de los ficheros del proyecto. A continuación, a través del fichero `Destravate.spec.ts`, se muestra la salida por pantalla tanto de las pruebas como del cubrimiento del código:
 
-```TypeScript
-import 'mocha'
-import { expect } from 'chai'
-import request from 'supertest'
-import { connect, disconnect } from 'mongoose'
+```
 
-import { UniqueList } from '../src/UniqueList.js'
-import { Activity } from '../src/Activity.js'
-import { Coordinate } from '../src/Coordinate.js'
-import { Track } from '../src/Track.js'
-import { User } from '../src/User.js'
-import { Group } from '../src/Group.js'
-import { Challenge } from '../src/Challenge.js'
-import { Server } from '../src/Server.js'
-import { TrackModel, UserModel, GroupModel, ChallengeModel } from '../src/Models.js'
-
-let server: Server
-before(async function () {
-  server = new Server()
-  await server.start(process.env.PORT || 3000)
-  await connect(process.env.MONGODB_URL!)
-  await TrackModel.deleteMany()
-  await UserModel.deleteMany()
-  await GroupModel.deleteMany()
-  await ChallengeModel.deleteMany()
-})
-
-describe('Destravate app tests', () => {
-  describe('Track class tests', () => {
-    const coord1: Coordinate = {
-      lat: 40.4167,
-      lng: -3.70325,
-    }
-    const coord2: Coordinate = {
-      lat: 52.520008,
-      lng: 13.404954,
-    }
-    const track1: Track = new Track(
-      0,
-      'Route to El Dorado',
-      coord1,
-      coord2,
-      100,
-      0.5,
-      Activity.running
-    )
-    it('Track Objects should have an id', () => {
-      expect(track1.id).to.be.a('number')
-      expect(track1.id).to.equal(0)
-    })
-    it('Track Objects should have a name', () => {
-      expect(track1.name).to.be.a('string')
-      expect(track1.name).to.equal('Route to El Dorado')
-    })
-    it('Track Objects should have a start and end points, and both should be Coordinates', () => {
-      expect(track1.start).to.be.a('object')
-      expect(track1.start).to.have.property('lat')
-      expect(track1.start).to.have.property('lng')
-      expect(track1.start.lat).to.be.a('number')
-      expect(track1.start.lng).to.be.a('number')
-      expect(track1.start.lat).to.equal(40.4167)
-      expect(track1.start.lng).to.equal(-3.70325)
-      expect(track1.end).to.be.a('object')
-      expect(track1.end).to.have.property('lat')
-      expect(track1.end).to.have.property('lng')
-      expect(track1.end.lat).to.be.a('number')
-      expect(track1.end.lng).to.be.a('number')
-      expect(track1.end.lat).to.equal(52.520008)
-      expect(track1.end.lng).to.equal(13.404954)
-    })
-    it('Track Objects should have a distance', () => {
-      expect(track1.distance).to.be.a('number')
-      expect(track1.distance).to.equal(100)
-    })
-    it('Track Objects should have a slope', () => {
-      expect(track1.slope).to.be.a('number')
-      expect(track1.slope).to.equal(0.5)
-    })
-    it('Track Objects should have a list of users that have done the track', () => {
-      expect(track1.users).to.be.a('array')
-      expect(track1.users).to.have.lengthOf(0)
-    })
-    it('Track Objects should have an activity', () => {
-      expect(Object.values(Activity)).to.include(track1.activity)
-    })
-    it('Track Objects should have a score', () => {
-      expect(track1.score).to.be.a('number')
-      expect(track1.score).to.equal(0)
-    })
-  })
-
-  describe('User class tests', () => {
-    const user = new User(0, 'Iluzio', Activity.running)
-    it('User Objects should have an id', () => {
-      expect(user.id).to.be.a('number')
-      expect(user.id).to.equal(0)
-    })
-    it('User Objects should have a name', () => {
-      expect(user.name).to.be.a('string')
-      expect(user.name).to.equal('Iluzio')
-    })
-    it('User Objects should have an sport activity', () => {
-      expect(Object.values(Activity)).to.include(user.activity)
-    })
-
-    it('User Objects should have a list of users', () => {
-      expect(user.users).to.be.a('array')
-      expect(user.users).to.have.lengthOf(0)
-    })
-    it('User Objects should be able to add users', () => {
-      user.users.add(1)
-      expect(user.users).to.have.lengthOf(1)
-      expect(user.users).to.include(1)
-    })
-    it('User Objects should be able to remove users', () => {
-      user.users.remove(1)
-      expect(user.users).to.have.lengthOf(0)
-      expect(user.users).to.not.include(1)
-    })
-    it('User Objects should have a list of groups in which the user is', () => {
-      expect(user.groups).to.be.a('array')
-      expect(user.groups).to.have.lengthOf(0)
-    })
-    it('User Objects should be able to add groups', () => {
-      user.groups.add(1)
-      expect(user.groups).to.have.lengthOf(1)
-      expect(user.groups).to.include(1)
-    })
-    it('User Objects should be able to remove groups', () => {
-      user.groups.remove(1)
-      expect(user.groups).to.have.lengthOf(0)
-      expect(user.groups).to.not.include(1)
-    })
-    it('User Objects should have stats', () => {
-      expect(Object.keys(user.stats.values)).includes('weekly')
-      expect(Object.keys(user.stats.values)).includes('monthly')
-      expect(Object.keys(user.stats.values)).includes('yearly')
-    })
-    it('User Objects should be able to reset stats', () => {
-      user.stats.reset()
-      expect(user.stats.values['weekly']).to.be.deep.equal({ km: 0, slope: 0 })
-      expect(user.stats.values['monthly']).to.be.deep.equal({ km: 0, slope: 0 })
-      expect(user.stats.values['yearly']).to.be.deep.equal({ km: 0, slope: 0 })
-    })
-    it('User Objects should have a list of favorite tracks', () => {
-      expect(user.tracks).to.be.a('array')
-      expect(user.tracks).to.have.lengthOf(0)
-    })
-    it('User Objects should be able to add favorite tracks', () => {
-      user.tracks.add(1)
-      expect(user.tracks).to.have.lengthOf(1)
-      expect(user.tracks).to.include(1)
-    })
-    it('User Objects should be able to remove favorite tracks', () => {
-      user.tracks.remove(1)
-      expect(user.tracks).to.have.lengthOf(0)
-      expect(user.tracks).to.not.include(1)
-    })
-    it('User Objects should have a list of active challenges', () => {
-      expect(user.challenges).to.be.a('array')
-      expect(user.challenges).to.have.lengthOf(0)
-    })
-    it('User Objects should be able to add active challenges', () => {
-      user.challenges.add(1)
-      expect(user.challenges).to.have.lengthOf(1)
-      expect(user.challenges).to.include(1)
-    })
-    it('User Objects should be able to remove active challenges', () => {
-      user.challenges.remove(1)
-      expect(user.challenges).to.have.lengthOf(0)
-      expect(user.challenges).to.not.include(1)
-    })
-    it('User Objects should have a record of the tracks done', () => {
-      expect(user.records).to.be.a('array')
-      expect(user.records).to.have.lengthOf(0)
-    })
-    it('User Objects should be able to add records', () => {
-      user.records.add({ date: '2019-01-01', tracks: new UniqueList(1, 2, 3) })
-      expect(user.records).to.have.lengthOf(1)
-      expect(user.records).to.be.deep.equal([
-        { date: '2019-01-01', tracks: new UniqueList(1, 2, 3) },
-      ])
-    })
-    it('User Objects should know if the friend/group/favorite/challenge/record is in the list when adding', () => {
-      user.users.add(1)
-      expect(user.users.add(1)).to.be.false
-      user.groups.add(1)
-      expect(user.groups.add(1)).to.be.false
-      user.tracks.add(1)
-      expect(user.tracks.add(1)).to.be.false
-      user.challenges.add(1)
-      expect(user.challenges.add(1)).to.be.false
-      user.records.add({ date: '2019-01-01', tracks: new UniqueList(1, 2, 3) })
-      expect(
-        user.records.add({
-          date: '2019-01-01',
-          tracks: new UniqueList(1, 2, 3),
-        })
-      ).to.be.false
-    })
-    it('User Objects should know if the friend/group/favorite/challenge/record is not in the list when removing', () => {
-      expect(user.users.remove(2)).to.be.false
-      expect(user.groups.remove(2)).to.be.false
-      expect(user.tracks.remove(2)).to.be.false
-      expect(user.challenges.remove(2)).to.be.false
-      expect(
-        user.records.remove({
-          date: '2019-01-01',
-          tracks: new UniqueList(1, 2),
-        })
-      ).to.be.false
-    })
-  })
-
-  describe('Group class tests', () => {
-    const group = new Group(0, 'Canary Team', 3, 4)
-    it('Group Objects should have an id', () => {
-      expect(group.id).to.be.a('number')
-      expect(group.id).to.equal(0)
-    })
-    it('Group Objects should have a name', () => {
-      expect(group.name).to.be.a('string')
-      expect(group.name).to.equal('Canary Team')
-    })
-    it('Group Objects should have a list of users', () => {
-      expect(group.users).to.be.a('array')
-      expect(group.users).to.have.lengthOf(2)
-    })
-    it('Group Objects should be able to add users', () => {
-      group.users.add(1)
-      expect(group.users).to.have.lengthOf(3)
-      expect(group.users).to.include(1)
-    })
-    it('Group Objects should be able to remove users', () => {
-      group.users.remove(1)
-      expect(group.users).to.have.lengthOf(2)
-      expect(group.users).to.not.include(1)
-    })
-    it('Group Objects should have stats', () => {
-      expect(Object.keys(group.stats.values)).includes('weekly')
-      expect(Object.keys(group.stats.values)).includes('monthly')
-      expect(Object.keys(group.stats.values)).includes('yearly')
-    })
-    it('Group Objects should be able to reset stats', () => {
-      group.stats.reset()
-      expect(group.stats.values['weekly']).to.be.deep.equal({ km: 0, slope: 0 })
-      expect(group.stats.values['monthly']).to.be.deep.equal({
-        km: 0,
-        slope: 0,
-      })
-      expect(group.stats.values['yearly']).to.be.deep.equal({ km: 0, slope: 0 })
-    })
-    it('Group Objects should have a list of favorite tracks', () => {
-      expect(group.tracks).to.be.a('array')
-      expect(group.tracks).to.have.lengthOf(0)
-    })
-    it('Group Objects should be able to add favorite tracks', () => {
-      group.tracks.add(1)
-      expect(group.tracks).to.have.lengthOf(1)
-      expect(group.tracks).to.include(1)
-    })
-    it('Group Objects should be able to remove favorite tracks', () => {
-      group.tracks.remove(1)
-      expect(group.tracks).to.have.lengthOf(0)
-      expect(group.tracks).to.not.include(1)
-    })
-    it('Group Objects should have a record of the tracks done', () => {
-      expect(group.records).to.be.a('array')
-      expect(group.records).to.have.lengthOf(0)
-    })
-    it('Group Objects should be able to add records', () => {
-      group.records.add({
-        date: '2019-01-01',
-        tracks: new UniqueList(1, 2, 3),
-        users: new UniqueList(1, 2, 3),
-        km: 10,
-      })
-      expect(group.records).to.have.lengthOf(1)
-      expect(group.records).to.be.deep.equal([
-        {
-          date: '2019-01-01',
-          tracks: new UniqueList(1, 2, 3),
-          users: new UniqueList(1, 2, 3),
-          km: 10,
-        },
-      ])
-    })
-    it('Group Objects should know if the user/favorite/record is in the list when adding', () => {
-      group.users.add(1)
-      expect(group.users.add(1)).to.be.false
-      group.tracks.add(1)
-      expect(group.tracks.add(1)).to.be.false
-      group.records.add({
-        date: '2019-01-01',
-        tracks: new UniqueList(1, 2, 3),
-        users: new UniqueList(1, 2, 3),
-        km: 10,
-      })
-      expect(
-        group.records.add({
-          date: '2019-01-01',
-          tracks: new UniqueList(1, 2, 3),
-          users: new UniqueList(1, 2, 3),
-          km: 10,
-        })
-      ).to.be.false
-    })
-    it('Group Objects should know if the user/favorite/record is not in the list when removing', () => {
-      expect(group.users.remove(2)).to.be.false
-      expect(group.tracks.remove(2)).to.be.false
-      expect(
-        group.records.remove({
-          date: '2019-01-01',
-          tracks: new UniqueList(1, 2),
-          users: new UniqueList(1, 2),
-          km: 10,
-        })
-      ).to.be.false
-    })
-    it('Group Objects should have a ranking', () => {
-      group.records.add({
-        date: '2023-01-01',
-        tracks: new UniqueList(1, 3),
-        users: new UniqueList(3),
-        km: 250,
-      })
-      expect(group.ranking).to.be.a('array')
-      expect(group.ranking).to.have.lengthOf(2)
-    })
-  })
-
-  describe('Challenge class tests', () => {
-    const challenge = new Challenge(
-      0,
-      'The World Warrior',
-      Activity.cycling,
-      0,
-      1
-    )
-    it('Challenge Objects should have an id', () => {
-      expect(challenge.id).to.be.a('number')
-      expect(challenge.id).to.equal(0)
-    })
-    it('Challenge Objects should have a name', () => {
-      expect(challenge.name).to.be.a('string')
-      expect(challenge.name).to.equal('The World Warrior')
-    })
-    it('Challenge Objects should have an activity', () => {
-      expect(Object.values(Activity)).to.include(challenge.activity)
-    })
-    it('Challenge Objects should have a list of tracks that are part of the challenge', () => {
-      expect(challenge.tracks).to.be.a('array')
-      expect(challenge.tracks).to.have.lengthOf(2)
-      expect(challenge.tracks).to.be.deep.equal([0, 1])
-    })
-    it('Challenge Objects should be able to add tracks', () => {
-      challenge.tracks.add(2)
-      expect(challenge.tracks).to.have.lengthOf(3)
-    })
-    it('Challenge Objects should be able to remove tracks', () => {
-      challenge.tracks.remove(2)
-      expect(challenge.tracks).to.have.lengthOf(2)
-    })
-    it('Challenge Objects should have a list of users that are part of the challenge', () => {
-      expect(challenge.users).to.be.a('array')
-      expect(challenge.users).to.have.lengthOf(0)
-    })
-    it('Challenge Objects should be able to add users', () => {
-      challenge.users.add(1)
-      expect(challenge.users).to.have.lengthOf(1)
-      expect(challenge.users).to.include(1)
-    })
-    it('Challenge Objects should be able to remove users', () => {
-      challenge.users.remove(1)
-      expect(challenge.users).to.have.lengthOf(0)
-      expect(challenge.users).to.not.include(1)
-    })
-    it('Challenge Objects should know if the user/track is in the list when adding', () => {
-      challenge.users.add(1)
-      expect(challenge.users.add(1)).to.be.false
-      challenge.tracks.add(1)
-      expect(challenge.tracks.add(1)).to.be.false
-    })
-    it('Challenge Objects should know if the user/track is not in the list when removing', () => {
-      expect(challenge.users.remove(2)).to.be.false
-      expect(challenge.tracks.remove(2)).to.be.false
-    })
-  })
-  describe('Server class tests', () => {
-    it("Servers should be able to make POST requests to 'the API", async () => {
-      await request(server.app).post('/users').send({
-        name: 'Test User',
-        activity: "running",
-      }).expect(201)
-      let user_id
-      await UserModel.findOne({ name: 'Test User' }).then((user) => {
-        if (user)
-          user_id = user._id
-      })
-      await request(server.app).post('/tracks').send({
-        name: 'Test Track',
-        start: {
-          lat: 0,
-          lng: 0,
-        },
-        end: {
-          lat: 1,
-          lng: 1,
-        },
-        distance: 100,
-        slope: 3.1,
-        users: [user_id],
-        activity: "running",
-      }).expect(201)
-    })
-  })
-})
-
-after(async function () {
-  await server.stop()
-  await disconnect()
-})
 ```
 
 Y como podemos ver a continuación todas las pruebas fueron superadas con éxito:
