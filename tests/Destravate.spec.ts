@@ -14,7 +14,7 @@ import { Server } from '../src/Server.js'
 let server: Server
 before(async function () {
   server = new Server()
-  await server.start(3000)
+  await server.start(process.env.PORT || 3000)
 })
 
 describe('Destravate app tests', () => {

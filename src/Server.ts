@@ -120,7 +120,7 @@ export class Server {
    * Starts listening on the specified port
    * @param port Port to listen on
    */
-  public start(port = parseInt(process.env.PORT as string, 10)) {
+  public start(port: number | string): void {
     this.server = this.app.listen(port, () => {
       console.log(`Server listening on port ${port}`)
     })
