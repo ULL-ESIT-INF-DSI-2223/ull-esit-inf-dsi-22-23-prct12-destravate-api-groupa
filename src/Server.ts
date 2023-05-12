@@ -8,9 +8,6 @@ import { UniqueList } from './UniqueList.js'
 import { ExtendedEntry } from './Entry.js'
 import { TrackModel, UserModel, GroupModel, ChallengeModel } from './Models.js'
 
-const dbURL = 'mongodb://localhost:27017'
-const dbName = '/Destravate'
-
 const routes = [
   '/tracks',
   '/tracks/:id',
@@ -144,9 +141,9 @@ export class Server {
    * @param res Response
    */
   private get = async (req: express.Request, res: express.Response) => {
-    connect(dbURL + dbName)
+    connect(process.env.MONGODB_URL!)
       .then(() => {
-        console.log('Connected to database ' + dbName)
+        console.log('Connected to database ' + process.env.MONGODB_URL!)
         let model
         let url = req.url
         if (req.url.includes('?'))
@@ -207,9 +204,9 @@ export class Server {
    * @param res Response
    */
   private post = async (req: express.Request, res: express.Response) => {
-    connect(dbURL + dbName)
+    connect(process.env.MONGODB_URL!)
       .then(() => {
-        console.log('Connected to database ' + dbName)
+        console.log('Connected to database ' + process.env.MONGODB_URL!)
         let document
         const url = req.url
         let body = req.body
@@ -350,9 +347,9 @@ export class Server {
    * @param res Response
    */
   private delete = async (req: express.Request, res: express.Response) => {
-    connect(dbURL + dbName)
+    connect(process.env.MONGODB_URL!)
       .then(() => {
-        console.log('Connected to database ' + dbName)
+        console.log('Connected to database ' + process.env.MONGODB_URL!)
         let model
         let url = req.url
         if (req.url.includes('?'))
@@ -461,9 +458,9 @@ export class Server {
    * @param res Response
    */
   private patch = async (req: express.Request, res: express.Response) => {
-    connect(dbURL + dbName)
+    connect(process.env.MONGODB_URL!)
       .then(() => {
-        console.log('Connected to database ' + dbName)
+        console.log('Connected to database ' + process.env.MONGODB_URL!)
         let model
         let url = req.url
         let body = req.body
