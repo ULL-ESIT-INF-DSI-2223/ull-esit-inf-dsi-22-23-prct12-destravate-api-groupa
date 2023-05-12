@@ -11,13 +11,18 @@ import { User } from '../src/User.js'
 import { Group } from '../src/Group.js'
 import { Challenge } from '../src/Challenge.js'
 import { Server } from '../src/Server.js'
-import { TrackModel, UserModel, GroupModel, ChallengeModel } from '../src/Models.js'
+import {
+  TrackModel,
+  UserModel,
+  GroupModel,
+  ChallengeModel,
+} from '../src/Models.js'
 
 let server: Server
 before(async function () {
   server = new Server()
   await server.start(process.env.PORT || 3000)
-  await connect(process.env.MONGODB_URL!) 
+  await connect(process.env.MONGODB_URL!)
   await TrackModel.deleteMany()
   await UserModel.deleteMany()
   await GroupModel.deleteMany()
@@ -387,30 +392,47 @@ describe('Destravate app tests', () => {
   })
   describe('Server class tests', () => {
     it("Servers should be able to make POST requests to 'the API", async () => {
-      await request(server.app).post('/users').send({
-        name: 'Test User',
-        activity: "running",
-      }).expect(201)
+      await request(server.app)
+        .post('/users')
+        .send({
+          name: 'Test User',
+          activity: 'running',
+        })
+        .expect(201)
       let user_id
       await UserModel.findOne({ name: 'Test User' }).then((user) => {
-        if (user)
-          user_id = user._id
+        if (user) user_id = user._id
       })
-      await request(server.app).post('/tracks').send({
-        name: 'Test Track',
-        start: {
-          lat: 0,
-          lng: 0,
-        },
-        end: {
-          lat: 1,
-          lng: 1,
-        },
-        distance: 100,
-        slope: 3.1,
-        users: [user_id],
-        activity: "running",
-      }).expect(201)
+      await request(server.app)
+        .post('/tracks')
+        .send({
+          name: 'Test Track',
+          start: {
+            lat: 0,
+            lng: 0,
+          },
+          end: {
+            lat: 1,
+            lng: 1,
+          },
+          distance: 100,
+          slope: 3.1,
+          users: [user_id],
+          activity: 'running',
+        })
+        .expect(201)
+      let track_id
+      await TrackModel.findOne({ name: 'Test Track' }).then((track) => {
+        if (track) track_id = track._id
+      })
+      await request(server.app)
+        .post('/groups')
+        .send({
+          name: 'Test Group',
+          users: [user_id],
+          tracks: [track_id],
+        })
+        .expect(201)
     })
   })
 })

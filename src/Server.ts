@@ -236,6 +236,7 @@ export class Server {
           }
         } catch (err) {
           res.status(400).json({ message: 'Bad parameters', error: err })
+          return
         }
         if (document) {
           document
@@ -533,6 +534,7 @@ export class Server {
   private updateRanking(body: any): any {
     const { id, name, users } = body
     const group = new Group(id, name, ...users)
+    if (!body.records) return body
     for (const record of body.records)
       record.users = new UniqueList(...record.users)
     group.records = new UniqueList<ExtendedEntry>(...body.records)

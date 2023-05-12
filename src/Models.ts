@@ -68,12 +68,10 @@ export const UserSchema = new Schema<UserInterface<string>>({
   },
   users: {
     type: Schema.Types.Mixed,
-    ref: 'User',
     required: false,
   },
   groups: {
     type: Schema.Types.Mixed,
-    ref: 'Group',
     required: false,
   },
   stats: {
@@ -82,12 +80,10 @@ export const UserSchema = new Schema<UserInterface<string>>({
   },
   tracks: {
     type: Schema.Types.Mixed,
-    ref: 'Track',
     required: false,
   },
   challenges: {
     type: Schema.Types.Mixed,
-    ref: 'Challenge',
     required: false,
   },
   records: {
@@ -112,7 +108,6 @@ export const GroupSchema = new Schema<GroupInterface<string>>({
   },
   users: {
     type: Schema.Types.Mixed,
-    ref: 'User',
     required: false,
   },
   stats: {
@@ -121,12 +116,10 @@ export const GroupSchema = new Schema<GroupInterface<string>>({
   },
   ranking: {
     type: Schema.Types.Mixed,
-    ref: 'User',
     required: false,
   },
   tracks: {
     type: Schema.Types.Mixed,
-    ref: 'Track',
     required: false,
   },
   records: {
@@ -156,12 +149,10 @@ export const ChallengeSchema = new Schema<ChallengeInterface<string>>({
   },
   tracks: {
     type: Schema.Types.Mixed,
-    ref: 'Track',
     required: false,
   },
   users: {
     type: Schema.Types.Mixed,
-    ref: 'User',
     required: false,
   },
 })
