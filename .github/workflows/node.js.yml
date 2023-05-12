@@ -1,4 +1,4 @@
-name: Tests
+name: Node.js CI
 
 on:
   push:
@@ -24,7 +24,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: $
-        cache: 'npm'
 
     - name: Start MongoDB
       uses: supercharge/mongodb-github-action@1.9.0
