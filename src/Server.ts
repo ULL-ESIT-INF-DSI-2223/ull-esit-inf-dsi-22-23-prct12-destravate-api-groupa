@@ -28,10 +28,10 @@ export class Server {
   private server: HttpServer = new HttpServer()
   /**
    * Instance of the express app.
-   * @private
+   * @public
    * @type {express.Application}
    */
-  private app: express.Application = express()
+  public app: express.Application = express()
 
   /* c8 ignore start */
   /**
@@ -521,7 +521,7 @@ export class Server {
    */
   private searchResult(result: any, res: express.Response): void {
     if (!result) res.status(404).json({ message: 'Not found' })
-    else res.status(200).json({ message: 'Updated', result: result })
+    else res.status(200).json({ message: 'Found', result: result })
   }
 
   /**

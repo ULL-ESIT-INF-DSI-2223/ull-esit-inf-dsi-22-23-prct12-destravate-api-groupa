@@ -1,6 +1,7 @@
 import 'mocha'
 import { expect } from 'chai'
 import request from 'supertest'
+import { connect, disconnect } from 'mongoose'
 
 import { UniqueList } from '../src/UniqueList.js'
 import { Activity } from '../src/Activity.js'
@@ -10,11 +11,17 @@ import { User } from '../src/User.js'
 import { Group } from '../src/Group.js'
 import { Challenge } from '../src/Challenge.js'
 import { Server } from '../src/Server.js'
+import { TrackModel, UserModel, GroupModel, ChallengeModel } from '../src/Models.js'
 
 let server: Server
 before(async function () {
   server = new Server()
   await server.start(process.env.PORT || 3000)
+  await connect(process.env.MONGODB_URL!) 
+  await TrackModel.deleteMany()
+  await UserModel.deleteMany()
+  await GroupModel.deleteMany()
+  await ChallengeModel.deleteMany()
 })
 
 describe('Destravate app tests', () => {
@@ -379,10 +386,36 @@ describe('Destravate app tests', () => {
     })
   })
   describe('Server class tests', () => {
-    it("Servers should be able to make GET requests to the server's API", async () => {})
+    it("Servers should be able to make POST requests to 'the API", async () => {
+      await request(server.app).post('/users').send({
+        name: 'Test User',
+        activity: "running",
+      }).expect(201)
+      let user_id
+      await UserModel.findOne({ name: 'Test User' }).then((user) => {
+        if (user)
+          user_id = user._id
+      })
+      await request(server.app).post('/tracks').send({
+        name: 'Test Track',
+        start: {
+          lat: 0,
+          lng: 0,
+        },
+        end: {
+          lat: 1,
+          lng: 1,
+        },
+        distance: 100,
+        slope: 3.1,
+        users: [user_id],
+        activity: "running",
+      }).expect(201)
+    })
   })
 })
 
 after(async function () {
   await server.stop()
+  await disconnect()
 })
