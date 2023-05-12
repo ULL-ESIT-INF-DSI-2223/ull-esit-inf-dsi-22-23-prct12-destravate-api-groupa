@@ -262,11 +262,7 @@ export class Server {
    */
   private createReferencesToTrack(document: any): void {
     UserModel.find({ _id: { $in: document.users } }).then((users) => {
-      if (
-        users &&
-        document.users &&
-        users.length !== document.users.length
-      )
+      if (users && document.users && users.length !== document.users.length)
         throw new Error('User not found')
     })
     UserModel.updateMany(
@@ -282,11 +278,7 @@ export class Server {
    */
   private createReferencesToUser(document: any): void {
     TrackModel.find({ _id: { $in: document.tracks } }).then((tracks) => {
-      if (
-        tracks &&
-        document.tracks &&
-        tracks.length !== document.tracks.length
-      )
+      if (tracks && document.tracks && tracks.length !== document.tracks.length)
         throw new Error('Track not found')
     })
     TrackModel.updateMany(
