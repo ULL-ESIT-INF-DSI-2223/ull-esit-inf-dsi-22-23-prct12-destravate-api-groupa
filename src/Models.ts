@@ -32,7 +32,7 @@ export const TrackSchema = new Schema<TrackInterface<string>>({
     type: Number,
     required: true,
   },
-  users_log: {
+  users: {
     type: Schema.Types.Mixed,
     required: false,
   },
@@ -66,7 +66,7 @@ export const UserSchema = new Schema<UserInterface<string>>({
     required: true,
     enum: Object.values(Activity),
   },
-  friends: {
+  users: {
     type: Schema.Types.Mixed,
     ref: 'User',
     required: false,
@@ -80,7 +80,7 @@ export const UserSchema = new Schema<UserInterface<string>>({
     type: Array,
     required: false,
   },
-  favorites: {
+  tracks: {
     type: Schema.Types.Mixed,
     ref: 'Track',
     required: false,
@@ -110,7 +110,7 @@ export const GroupSchema = new Schema<GroupInterface<string>>({
     required: true,
     unique: true,
   },
-  members: {
+  users: {
     type: Schema.Types.Mixed,
     ref: 'User',
     required: false,
@@ -124,7 +124,7 @@ export const GroupSchema = new Schema<GroupInterface<string>>({
     ref: 'User',
     required: false,
   },
-  favorites: {
+  tracks: {
     type: Schema.Types.Mixed,
     ref: 'Track',
     required: false,

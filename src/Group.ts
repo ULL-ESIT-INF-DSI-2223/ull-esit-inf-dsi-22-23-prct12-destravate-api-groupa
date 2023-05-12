@@ -7,10 +7,10 @@ import { ExtendedEntry } from './Entry.js'
  */
 export interface GroupInterface<T = number> {
   name: string
-  members: Array<T>
+  users: Array<T>
   stats: Stats
   ranking: Array<T>
-  favorites: Array<T>
+  tracks: Array<T>
   records: Array<ExtendedEntry<T>>
 }
 
@@ -34,7 +34,7 @@ export class Group<T = number> implements GroupInterface<T> {
    * List of users of the group.
    * @type {UniqueList<T>}
    */
-  public members: UniqueList<T> = new UniqueList<T>()
+  public users: UniqueList<T> = new UniqueList<T>()
 
   /**
    * Stats of the group.
@@ -46,7 +46,7 @@ export class Group<T = number> implements GroupInterface<T> {
    * List of favorite tracks of the group.
    * @type {UniqueList<T>}
    */
-  public favorites: UniqueList<T> = new UniqueList<T>()
+  public tracks: UniqueList<T> = new UniqueList<T>()
 
   /**
    * List of records of the group.
@@ -61,10 +61,10 @@ export class Group<T = number> implements GroupInterface<T> {
    * @param id Id of the group.
    * @param name Name of the group.
    */
-  public constructor(id: number, name: string, ...members: T[]) {
+  public constructor(id: number, name: string, ...users: T[]) {
     this.id = id
     this.name = name
-    for (const member of members) this.members.add(member)
+    for (const member of users) this.users.add(member)
     this.stats.values = {
       weekly: { km: 0, slope: 0 },
       monthly: { km: 0, slope: 0 },
@@ -89,7 +89,7 @@ export class Group<T = number> implements GroupInterface<T> {
       (a, b) => distances[b] - distances[a]
     )
     for (const id of sorted)
-      if (this.convertToT(id) && this.members.has(this.convertToT(id) as T))
+      if (this.convertToT(id) && this.users.has(this.convertToT(id) as T))
         ranking.add(this.convertToT(id) as T)
     return ranking
   }

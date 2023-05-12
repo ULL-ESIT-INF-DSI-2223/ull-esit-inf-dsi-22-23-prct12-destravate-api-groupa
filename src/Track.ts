@@ -11,7 +11,7 @@ export interface TrackInterface<T = number> {
   end: Coordinate
   distance: number
   slope: number
-  users_log: Array<T>
+  users: Array<T>
   activity: Activity
   score: number
 }
@@ -68,7 +68,7 @@ export class Track<T = number> implements TrackInterface<T> {
    * List of users that have done the track.
    * @type {UniqueList<T>}
    */
-  public users_log: UniqueList<T> = new UniqueList<T>()
+  public users: UniqueList<T> = new UniqueList<T>()
 
   /**
    * Activity to do in the track.

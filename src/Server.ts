@@ -226,7 +226,7 @@ export class Server {
               this.createReferencesToUser(document)
               break
             case '/groups':
-              body = this.updateBody(body)
+              body = this.updateRanking(body)
               document = new GroupModel(body)
               this.createReferencesToGroup(document)
               break
@@ -261,16 +261,16 @@ export class Server {
    * @param document Track document
    */
   private createReferencesToTrack(document: any): void {
-    UserModel.find({ _id: { $in: document.users_log } }).then((users) => {
+    UserModel.find({ _id: { $in: document.users } }).then((users) => {
       if (
         users &&
-        document.users_log &&
-        users.length !== document.users_log.length
+        document.users &&
+        users.length !== document.users.length
       )
         throw new Error('User not found')
     })
     UserModel.updateMany(
-      { _id: { $in: document.users_log } },
+      { _id: { $in: document.users } },
       { $push: { tracks: document._id } },
       { multi: true, runValidators: true }
     )
@@ -281,17 +281,17 @@ export class Server {
    * @param document User document
    */
   private createReferencesToUser(document: any): void {
-    TrackModel.find({ _id: { $in: document.favorites } }).then((tracks) => {
+    TrackModel.find({ _id: { $in: document.tracks } }).then((tracks) => {
       if (
         tracks &&
-        document.favorites &&
-        tracks.length !== document.favorites.length
+        document.tracks &&
+        tracks.length !== document.tracks.length
       )
         throw new Error('Track not found')
     })
     TrackModel.updateMany(
-      { _id: { $in: document.favorites } },
-      { $push: { users_log: document._id } },
+      { _id: { $in: document.tracks } },
+      { $push: { users: document._id } },
       { multi: true, runValidators: true }
     )
     ChallengeModel.find({ _id: { $in: document.challenges } }).then(
@@ -315,7 +315,7 @@ export class Server {
     })
     GroupModel.updateMany(
       { _id: { $in: document.groups } },
-      { $push: { members: document._id } },
+      { $push: { users: document._id } },
       { multi: true, runValidators: true }
     )
   }
@@ -325,12 +325,12 @@ export class Server {
    * @param document Group document
    */
   private createReferencesToGroup(document: any): void {
-    UserModel.find({ _id: { $in: document.members } }).then((users) => {
-      if (users && document.members && users.length !== document.members.length)
+    UserModel.find({ _id: { $in: document.users } }).then((users) => {
+      if (users && document.users && users.length !== document.users.length)
         throw new Error('User not found')
     })
     UserModel.updateMany(
-      { _id: { $in: document.members } },
+      { _id: { $in: document.users } },
       { $push: { groups: document._id } },
       { multi: true, runValidators: true }
     )
@@ -427,26 +427,26 @@ export class Server {
    * @param id ID of the user to delete
    */
   private deleteReferencesFromUser(id: string): void {
-    TrackModel.find({ users_log: { $in: [id] } }).then((tracks) => {
+    TrackModel.find({ users: { $in: [id] } }).then((tracks) => {
       tracks.forEach((track) => {
-        track.users_log = new UniqueList<string>(
-          ...track.users_log.filter((user) => user !== id)
+        track.users = new UniqueList<string>(
+          ...track.users.filter((user) => user !== id)
         )
         track.save()
       })
     })
-    UserModel.find({ friends: { $in: [id] } }).then((users) => {
+    UserModel.find({ users: { $in: [id] } }).then((users) => {
       users.forEach((user) => {
-        user.friends = new UniqueList<string>(
-          ...user.friends.filter((friend) => friend !== id)
+        user.users = new UniqueList<string>(
+          ...user.users.filter((friend) => friend !== id)
         )
         user.save()
       })
     })
-    GroupModel.find({ members: { $in: [id] } }).then((groups) => {
+    GroupModel.find({ users: { $in: [id] } }).then((groups) => {
       groups.forEach((group) => {
-        group.members = new UniqueList<string>(
-          ...group.members.filter((member) => member !== id)
+        group.users = new UniqueList<string>(
+          ...group.users.filter((member) => member !== id)
         )
         group.ranking.splice(group.ranking.indexOf(id), 1)
         group.records.forEach((record) => {
@@ -486,7 +486,7 @@ export class Server {
             break
           case '/groups':
             model = GroupModel
-            body = this.updateBody(body)
+            body = this.updateRanking(body)
             break
           case '/challenges':
             model = ChallengeModel
@@ -541,9 +541,9 @@ export class Server {
    * @param body Body of the request
    * @returns Updated document
    */
-  private updateBody(body: any): any {
-    const { id, name, members } = body
-    const group = new Group(id, name, ...members)
+  private updateRanking(body: any): any {
+    const { id, name, users } = body
+    const group = new Group(id, name, ...users)
     for (const record of body.records)
       record.users = new UniqueList(...record.users)
     group.records = new UniqueList<ExtendedEntry>(...body.records)

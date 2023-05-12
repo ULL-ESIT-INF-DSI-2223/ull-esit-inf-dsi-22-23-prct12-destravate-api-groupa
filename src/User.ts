@@ -10,9 +10,9 @@ export interface UserInterface<T = number> {
   name: string
   activity: Activity
   stats: Stats
-  friends: T[]
+  users: T[]
   groups: T[]
-  favorites: T[]
+  tracks: T[]
   challenges: T[]
   records: Entry<T>[]
 }
@@ -41,10 +41,10 @@ export class User<T = number> implements UserInterface<T> {
   public activity: Activity
 
   /**
-   * List of friends of the user.
+   * List of users of the user.
    * @type {UniqueList<T>}
    */
-  public friends: UniqueList<T> = new UniqueList<T>()
+  public users: UniqueList<T> = new UniqueList<T>()
 
   /**
    * List of groups of the user.
@@ -62,7 +62,7 @@ export class User<T = number> implements UserInterface<T> {
    * List of favorite tracks of the user.
    * @type {UniqueList<T>}
    */
-  public favorites: UniqueList<T> = new UniqueList<T>()
+  public tracks: UniqueList<T> = new UniqueList<T>()
 
   /**
    * List of active challenges of the user.
