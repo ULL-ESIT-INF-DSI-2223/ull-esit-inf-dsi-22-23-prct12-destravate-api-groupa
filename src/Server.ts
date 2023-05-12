@@ -383,7 +383,7 @@ export class Server {
         }
         if (model && req.params.id) {
           model
-            .deleteOne({ id: parseInt(req.params.id as string) })
+            .findByIdAndDelete(req.params.id)
             .then((result) => {
               this.deleteReferencesFromUser(req.params.id)
                 .then(() => {})

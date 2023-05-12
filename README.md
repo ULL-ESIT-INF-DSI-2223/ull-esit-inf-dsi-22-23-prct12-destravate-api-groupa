@@ -855,7 +855,7 @@ Si la ruta es `/challenges`, se crea un documento de tipo `ChallengeModel` con e
         }
         if (model && req.params.id) {
           model
-            .deleteOne({ id: parseInt(req.params.id as string) })
+            .findByIdAndDelete(req.params.id)
             .then((result) => {
               this.deleteReferencesFromUser(req.params.id)
               res.status(200).json({ message: 'Deleted', result: result })
