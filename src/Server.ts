@@ -55,9 +55,7 @@ export class Server {
     for (const route of routes) {
       this.app.get(route, (req, res) => {
         this.get(req, res)
-          .then(() => {
-            console.log('Get request completed')
-          })
+          .then(() => {})
           .catch((err) => {
             console.log('Error in get request: ' + err)
           })
@@ -72,9 +70,7 @@ export class Server {
     for (const route of routes) {
       this.app.post(route, (req, res) => {
         this.post(req, res)
-          .then(() => {
-            console.log('Post request completed')
-          })
+          .then(() => {})
           .catch((err) => {
             console.log('Error in post request: ' + err)
           })
@@ -89,9 +85,7 @@ export class Server {
     for (const route of routes) {
       this.app.delete(route, (req, res) => {
         this.delete(req, res)
-          .then(() => {
-            console.log('Delete request completed')
-          })
+          .then(() => {})
           .catch((err) => {
             console.log('Error in delete request: ' + err)
           })
@@ -106,9 +100,7 @@ export class Server {
     for (const route of routes) {
       this.app.patch(route, (req, res) => {
         this.patch(req, res)
-          .then(() => {
-            console.log('Patch request completed')
-          })
+          .then(() => {})
           .catch((err) => {
             console.log('Error in patch request: ' + err)
           })
@@ -143,11 +135,12 @@ export class Server {
   private get = async (req: express.Request, res: express.Response) => {
     connect(process.env.MONGODB_URL!)
       .then(() => {
-        console.log('Connected to database ' + process.env.MONGODB_URL!)
         let model
         let url = req.url
         if (req.url.includes('?'))
           url = req.url.substring(0, req.url.indexOf('?'))
+        if (/\/[a-z]+\/[a-z0-9]+$/.test(url))
+          url = url.substring(0, url.lastIndexOf('/'))
         switch (url) {
           case '/tracks':
             model = TrackModel
@@ -206,12 +199,13 @@ export class Server {
   private post = async (req: express.Request, res: express.Response) => {
     connect(process.env.MONGODB_URL!)
       .then(() => {
-        console.log('Connected to database ' + process.env.MONGODB_URL!)
         let document
-        const url = req.url
+        let url = req.url
         let body = req.body
         if (url.includes('?'))
           res.status(400).json({ message: 'Bad parameters' })
+        if (/\/[a-z]+\/[a-z0-9]+$/.test(url))
+          url = url.substring(0, url.lastIndexOf('/'))
         try {
           switch (url) {
             case '/tracks':
@@ -258,12 +252,12 @@ export class Server {
    * Links the track to the other documents.
    * @param document Track document
    */
-  private createReferencesToTrack(document: any): void {
-    UserModel.find({ _id: { $in: document.users } }).then((users) => {
-      if (users && document.users && users.length !== document.users.length)
+  private async createReferencesToTrack(document: any) {
+    await UserModel.find({ _id: { $in: document.users } }).then((users) => {
+      if (document.users && users.length !== document.users.length)
         throw new Error('User not found')
     })
-    UserModel.updateMany(
+    await UserModel.updateMany(
       { _id: { $in: document.users } },
       { $push: { tracks: document._id } },
       { multi: true, runValidators: true }
@@ -274,36 +268,35 @@ export class Server {
    * Links the user to the other documents.
    * @param document User document
    */
-  private createReferencesToUser(document: any): void {
-    TrackModel.find({ _id: { $in: document.tracks } }).then((tracks) => {
-      if (tracks && document.tracks && tracks.length !== document.tracks.length)
+  private async createReferencesToUser(document: any) {
+    await TrackModel.find({ _id: { $in: document.tracks } }).then((tracks) => {
+      if (document.tracks && tracks.length !== document.tracks.length)
         throw new Error('Track not found')
     })
-    TrackModel.updateMany(
+    await TrackModel.updateMany(
       { _id: { $in: document.tracks } },
       { $push: { users: document._id } },
       { multi: true, runValidators: true }
     )
-    ChallengeModel.find({ _id: { $in: document.challenges } }).then(
+    await ChallengeModel.find({ _id: { $in: document.challenges } }).then(
       (challenges) => {
         if (
-          challenges &&
           document.challenges &&
           challenges.length !== document.challenges.length
         )
           throw new Error('Challenge not found')
       }
     )
-    ChallengeModel.updateMany(
+    await ChallengeModel.updateMany(
       { _id: { $in: document.challenges } },
       { $push: { users: document._id } },
       { multi: true, runValidators: true }
     )
-    GroupModel.find({ _id: { $in: document.groups } }).then((groups) => {
-      if (groups && document.groups && groups.length !== document.groups.length)
+    await GroupModel.find({ _id: { $in: document.groups } }).then((groups) => {
+      if (document.groups && groups.length !== document.groups.length)
         throw new Error('Group not found')
     })
-    GroupModel.updateMany(
+    await GroupModel.updateMany(
       { _id: { $in: document.groups } },
       { $push: { users: document._id } },
       { multi: true, runValidators: true }
@@ -314,12 +307,12 @@ export class Server {
    * Links the group to the other documents.
    * @param document Group document
    */
-  private createReferencesToGroup(document: any): void {
-    UserModel.find({ _id: { $in: document.users } }).then((users) => {
-      if (users && document.users && users.length !== document.users.length)
+  private async createReferencesToGroup(document: any) {
+    await UserModel.find({ _id: { $in: document.users } }).then((users) => {
+      if (document.users && users.length !== document.users.length)
         throw new Error('User not found')
     })
-    UserModel.updateMany(
+    await UserModel.updateMany(
       { _id: { $in: document.users } },
       { $push: { groups: document._id } },
       { multi: true, runValidators: true }
@@ -330,12 +323,12 @@ export class Server {
    * Links the challenge to the other documents.
    * @param document Challenge document
    */
-  private createReferencesToChallenge(document: any): void {
-    UserModel.find({ _id: { $in: document.users } }).then((users) => {
-      if (users && document.users && users.length !== document.users.length)
+  private async createReferencesToChallenge(document: any) {
+    await UserModel.find({ _id: { $in: document.users } }).then((users) => {
+      if (document.users && users.length !== document.users.length)
         throw new Error('User not found')
     })
-    UserModel.updateMany(
+    await UserModel.updateMany(
       { _id: { $in: document.users } },
       { $push: { challenges: document._id } },
       { multi: true, runValidators: true }
@@ -350,11 +343,12 @@ export class Server {
   private delete = async (req: express.Request, res: express.Response) => {
     connect(process.env.MONGODB_URL!)
       .then(() => {
-        console.log('Connected to database ' + process.env.MONGODB_URL!)
         let model
         let url = req.url
         if (req.url.includes('?'))
           url = req.url.substring(0, req.url.indexOf('?'))
+        if (/\/[a-z]+\/[a-z0-9]+$/.test(url))
+          url = url.substring(0, url.lastIndexOf('/'))
         switch (url) {
           case '/tracks':
             model = TrackModel
@@ -416,8 +410,8 @@ export class Server {
    * Deletes all references to a user in the database before deleting the user.
    * @param id ID of the user to delete
    */
-  private deleteReferencesFromUser(id: string): void {
-    TrackModel.find({ users: { $in: [id] } }).then((tracks) => {
+  private async deleteReferencesFromUser(id: string) {
+    await TrackModel.find({ users: { $in: [id] } }).then((tracks) => {
       tracks.forEach((track) => {
         track.users = new UniqueList<string>(
           ...track.users.filter((user) => user !== id)
@@ -425,7 +419,7 @@ export class Server {
         track.save()
       })
     })
-    UserModel.find({ users: { $in: [id] } }).then((users) => {
+    await UserModel.find({ users: { $in: [id] } }).then((users) => {
       users.forEach((user) => {
         user.users = new UniqueList<string>(
           ...user.users.filter((friend) => friend !== id)
@@ -433,7 +427,7 @@ export class Server {
         user.save()
       })
     })
-    GroupModel.find({ users: { $in: [id] } }).then((groups) => {
+    await GroupModel.find({ users: { $in: [id] } }).then((groups) => {
       groups.forEach((group) => {
         group.users = new UniqueList<string>(
           ...group.users.filter((member) => member !== id)
@@ -444,7 +438,7 @@ export class Server {
         })
       })
     })
-    ChallengeModel.find({ users: { $in: [id] } }).then((challenges) => {
+    await ChallengeModel.find({ users: { $in: [id] } }).then((challenges) => {
       challenges.forEach((challenge) => {
         challenge.users = new UniqueList<string>(
           ...challenge.users.filter((user) => user !== id)
@@ -461,12 +455,13 @@ export class Server {
   private patch = async (req: express.Request, res: express.Response) => {
     connect(process.env.MONGODB_URL!)
       .then(() => {
-        console.log('Connected to database ' + process.env.MONGODB_URL!)
         let model
         let url = req.url
         let body = req.body
         if (req.url.includes('?'))
           url = req.url.substring(0, req.url.indexOf('?'))
+        if (/\/[a-z]+\/[a-z0-9]+$/.test(url))
+          url = url.substring(0, url.lastIndexOf('/'))
         switch (url) {
           case '/tracks':
             model = TrackModel

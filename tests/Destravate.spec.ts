@@ -18,6 +18,11 @@ import {
   ChallengeModel,
 } from '../src/Models.js'
 
+let user_id = ''
+let track_id = ''
+let group_id = ''
+let challenge_id = ''
+
 let server: Server
 before(async function () {
   server = new Server()
@@ -391,7 +396,7 @@ describe('Destravate app tests', () => {
     })
   })
   describe('Server class tests', () => {
-    it("Servers should be able to make POST requests to 'the API", async () => {
+    it("Servers should be able to make POST requests to the API", async () => {
       await request(server.app)
         .post('/users')
         .send({
@@ -399,9 +404,9 @@ describe('Destravate app tests', () => {
           activity: 'running',
         })
         .expect(201)
-      let user_id
+
       await UserModel.findOne({ name: 'Test User' }).then((user) => {
-        if (user) user_id = user._id
+        if (user) user_id = user._id.toString()
       })
       await request(server.app)
         .post('/tracks')
@@ -421,9 +426,8 @@ describe('Destravate app tests', () => {
           activity: 'running',
         })
         .expect(201)
-      let track_id
       await TrackModel.findOne({ name: 'Test Track' }).then((track) => {
-        if (track) track_id = track._id
+        if (track) track_id = track._id.toString()
       })
       await request(server.app)
         .post('/groups')
@@ -433,6 +437,60 @@ describe('Destravate app tests', () => {
           tracks: [track_id],
         })
         .expect(201)
+      await GroupModel.findOne({ name: 'Test Group' }).then((group) => {
+        if (group) group_id = group._id.toString()
+      })
+      await request(server.app)
+        .post('/challenges')
+        .send({
+          name: 'Test Challenge',
+          activity: 'running',
+          tracks: [track_id],
+          users: [user_id],
+        }).expect(201)
+      await ChallengeModel.findOne({ name: 'Test Challenge' }).then((challenge) => {
+        if (challenge) challenge_id = challenge._id.toString()
+      })
+    })
+    it("Servers should be able to make GET requests to the API", async () => {
+      await request(server.app)
+        .get('/users')
+        .expect(200)
+      await request(server.app)
+        .get('/tracks')
+        .expect(200)
+      await request(server.app)
+        .get('/groups')
+        .expect(200)
+      await request(server.app)
+        .get('/challenges')
+        .expect(200)
+      await request(server.app)
+        .get('/users/' + user_id)
+        .expect(200)
+      await request(server.app)
+        .get('/tracks/' + track_id)
+        .expect(200)
+      await request(server.app)
+        .get('/groups/' + group_id)
+        .expect(200)
+      await request(server.app)
+        .get('/challenges/' + challenge_id)
+        .expect(200)
+    })
+    it("Servers should be able to make DELETE requests to the API", async () => {
+      await request(server.app)
+        .delete('/users/' + user_id)
+        .expect(200)
+      await request(server.app)
+        .delete('/tracks/' + track_id)
+        .expect(200)
+      await request(server.app)
+        .delete('/groups/' + group_id)
+        .expect(200)
+      await request(server.app)
+        .delete('/challenges/' + challenge_id)
+        .expect(200)
     })
   })
 })

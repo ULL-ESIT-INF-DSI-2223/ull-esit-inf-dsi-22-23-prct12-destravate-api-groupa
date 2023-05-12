@@ -35,6 +35,7 @@ export const TrackSchema = new Schema<TrackInterface<string>>({
   users: {
     type: Schema.Types.Mixed,
     required: false,
+    default: []
   },
   activity: {
     type: String,
@@ -69,10 +70,12 @@ export const UserSchema = new Schema<UserInterface<string>>({
   users: {
     type: Schema.Types.Mixed,
     required: false,
+    default: []
   },
   groups: {
     type: Schema.Types.Mixed,
     required: false,
+    default: []
   },
   stats: {
     type: Array,
@@ -81,10 +84,12 @@ export const UserSchema = new Schema<UserInterface<string>>({
   tracks: {
     type: Schema.Types.Mixed,
     required: false,
+    default: []
   },
   challenges: {
     type: Schema.Types.Mixed,
     required: false,
+    default: []
   },
   records: {
     type: Schema.Types.Mixed,
@@ -109,6 +114,7 @@ export const GroupSchema = new Schema<GroupInterface<string>>({
   users: {
     type: Schema.Types.Mixed,
     required: false,
+    default: []
   },
   stats: {
     type: Array,
@@ -117,10 +123,12 @@ export const GroupSchema = new Schema<GroupInterface<string>>({
   ranking: {
     type: Schema.Types.Mixed,
     required: false,
+    default: []
   },
   tracks: {
     type: Schema.Types.Mixed,
     required: false,
+    default: []
   },
   records: {
     type: Schema.Types.Mixed,
@@ -150,10 +158,12 @@ export const ChallengeSchema = new Schema<ChallengeInterface<string>>({
   tracks: {
     type: Schema.Types.Mixed,
     required: false,
+    default: []
   },
   users: {
     type: Schema.Types.Mixed,
     required: false,
+    default: []
   },
 })
 
