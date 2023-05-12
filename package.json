@@ -2,8 +2,11 @@
   "name": "prct12",
   "version": "1.0.0",
   "description": "",
+  "main": "dist/main.js",
   "type": "module",
   "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
     "test": "mocha",
     "coverage": "c8 npm test && c8 report --reporter=lcov",
     "doc": "typedoc --out ./docs ./src & touch docs/.nojekyll",
