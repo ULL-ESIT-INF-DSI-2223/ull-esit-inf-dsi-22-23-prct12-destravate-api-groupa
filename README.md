@@ -104,10 +104,9 @@ export type ExtendedEntry<T = number> = Entry<T> & {
 }
 ```
 
-Este código define dos tipos de datos: Entry y ExtendedEntry. Ambos tipos tienen una propiedad date que es una cadena de texto y una propiedad tracks que es una lista única de elementos de tipo T.
+Este código define dos tipos de datos: ```Entry``` y ```ExtendedEntry```. Ambos tipos tienen una propiedad date que es una cadena de texto y una propiedad tracks que es una lista única de elementos de tipo ```T```.
 
-El tipo ExtendedEntry extiende el tipo Entry y agrega dos nuevas propiedades: users, que es una lista única de elementos de tipo T, y km, que es un número.
-
+El tipo ```ExtendedEntry``` extiende el tipo Entry y agrega dos nuevas propiedades: ```users```, que es una lista única de elementos de tipo ```T```, y km, que es un número.`
 
 ### Group.ts
 
@@ -186,13 +185,13 @@ export class Group<T = number> implements GroupInterface<T> {
 }
 ```
 
-Este código define una clase llamada Group que implementa la interfaz GroupInterface. La interfaz GroupInterface define una estructura de datos que representa un grupo de usuarios y sus estadísticas de actividad física. La clase Group tiene propiedades como name, users, stats, tracks, records y ranking, que representan el nombre del grupo, la lista de usuarios, las estadísticas de actividad física, las pistas, los registros y la clasificación de los usuarios en función de su actividad física.
+Este código define una clase llamada ```Group``` que implementa la interfaz ```GroupInterface```. La interfaz ```GroupInterface``` define una estructura de datos que representa un grupo de usuarios y sus estadísticas de actividad física. La clase ```Group``` tiene propiedades como ```name```, ```users```, ```stats```, ```tracks```, ```records``` y ```ranking```, que representan el nombre del grupo, la lista de usuarios, las estadísticas de actividad física, las pistas, los registros y la clasificación de los usuarios en función de su actividad física.
 
-La clase Group tiene un constructor que toma un id, un name y una lista de users. El constructor inicializa las propiedades id y name y agrega los usuarios a la lista de usuarios.
+La clase ```Group``` tiene un constructor que toma un ```id```, un ```name``` y una lista de ```users```. El constructor inicializa las propiedades ```id``` y ```name``` y agrega los usuarios a la lista de usuarios.
 
-La propiedad ranking es una lista de usuarios ordenados por su actividad física. La propiedad records es una lista de registros de actividad física de los usuarios. La propiedad stats es un objeto que contiene las estadísticas de actividad física del grupo.
+La propiedad ```ranking``` es una lista de usuarios ordenados por su actividad física. La propiedad ```records``` es una lista de registros de actividad física de los usuarios. La propiedad ```stats``` es un objeto que contiene las estadísticas de actividad física del grupo.
 
-La clase Group también tiene un método privado llamado convertToT que convierte un valor a un tipo genérico T. Este método se utiliza para convertir los identificadores de usuario de tipo string a un tipo genérico T.
+La clase ```Group``` también tiene un método privado llamado ```convertToT``` que convierte un valor a un tipo genérico ```T```. Este método se utiliza para convertir los identificadores de usuario de tipo ```string``` a un tipo genérico ```T```.
 
 
 ### Models.ts
@@ -353,7 +352,7 @@ export const ChallengeModel = model<ChallengeInterface<string>>(
 )
 ```
 
-En este código, se definen cuatro esquemas: Track, User, Group y Challenge. Cada uno de ellos tiene diferentes campos que definen la estructura de los documentos que se almacenarán en la base de datos. Por ejemplo, el esquema Track tiene campos como ```name```, ```start```, ```end```, ```distance```, ```slope```, ```users```, ```activity``` y ```score```.
+En este código, se definen cuatro esquemas: ```Track```, ```User```, ```Group``` y ```Challenge```. Cada uno de ellos tiene diferentes campos que definen la estructura de los documentos que se almacenarán en la base de datos. Por ejemplo, el esquema Track tiene campos como ```name```, ```start```, ```end```, ```distance```, ```slope```, ```users```, ```activity``` y ```score```.
 
 Cada esquema se utiliza para crear un modelo correspondiente utilizando la función ```model``` de Mongoose. Por ejemplo, el modelo Track se crea utilizando ```TrackModel = model<TrackInterface<string>>('Track', TrackSchema)```.
 
