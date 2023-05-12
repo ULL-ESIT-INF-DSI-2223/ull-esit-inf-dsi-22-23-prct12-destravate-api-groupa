@@ -4,9 +4,38 @@
 
 ## Introducción
 
-El objetivo de esta práctica es implementar un API REST, haciendo uso de Node/Express, que permita llevar a cabo operaciones de creación, lectura, modificación y borrado (Create, Read, Update, Delete - CRUD) de un registro de actividades deportivas.
+El objetivo de esta práctica es implementar un API REST, haciendo uso de Node/Express, que permita llevar a cabo operaciones de creación, lectura, modificación y borrado [(Create, Read, Update, Delete - CRUD)](https://developer.mozilla.org/es/docs/Glossary/CRUD) de un registro de actividades deportivas.
 
-Podríamos decir que otro objetivo de la práctica es trabajar en grupo de manera conjunta de tal modo que todos aportemos nuestro conocimiento para cumplir con el objetivo, enunciado y requisitos, todo esto gracias a la comunicación adecuada, al trabajo en grupo y también a herramientas muy útiles que vimos en prácticas anteriores como LiveShare para poder estar todos los componentes del grupo trabjando en el código a la vez.
+La aplicación estará conformada por usuarios que se podrán registrar en la base de datos, grupos formados por usuarios, rutas deportivas y retos a realizar.
+
+Todas las entradas serán guardadas en una base de datos [MongoDB](https://www.mongodb.com/), haciendo uso de Modelado de Datos con Mongoose. Por último, la API será desplegada en [Cyclic](https://www.cyclic.sh/).
+
+## Planteamiento
+
+Para el diseño de nuestra jerarquía de estructuras de datos empezamos definiendo una clase para cada tipo de objeto a almacenar en la base de datos, resultando en las clases:
+
+  - `User`
+  - `Group`
+  - `Track`
+  - `Challenge`
+
+Realmente no era necesario realizar estas clases ya que al ser una API REST, los datos se almacenan en la base de datos y se devuelven en formato JSON (realmente sólo interesa la interfaz que conforman a cada una de ellas), pero se ha decidido realizarlas para poder realizar las operaciones de validación de datos y de comprobación de unicidad de los mismos, en vista a un posible desarrollo de una aplicación por consola que haga uso de la API.
+
+Para funcionar, las clases necesitan de otras estructuras de apoyo, como por ejemplo la definición de las coordenadas que definen un punto de una ruta deportiva, las listas con los distintos identificadores... Al final, estas estructuras son:
+
+  - `Activity`. Define una enumeración con los distintos tipos de actividad deportiva permitidos.
+  - `Coordinate`. Define un tipo de objeto que representa una coordenada geográfica.
+  - `Entry`. Define un tipo de objeto que representa una entrada en la base de datos.
+  - `Stats`. Define una clase que representa las estadísticas de una ruta deportiva.
+  - `UniqueList`. Define una clase que representa una lista de elementos únicos.
+
+Por último, para poder gestionar tanto la base de datos como las solicitudes realizadas a la API, se ha definido la clase ```Server```, que se encarga de gestionar las peticiones HTTP y de realizar las operaciones necesarias en la base de datos. Para ello, se ha hecho uso de la librería [Express](https://expressjs.com/).
+
+![Express](./images/express.png)
+
+Además, este servidor creará, consultará, eliminará y modificará los datos de la base de datos haciendo uso de la librería [Mongoose](https://mongoosejs.com/) y de los modelos definidos en el fichero ```Model```.
+
+![MongoDB](./images/mongodb.png)
 
 ## Desarrollo
 
