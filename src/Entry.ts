@@ -6,7 +6,7 @@ import { UniqueList } from './UniqueList'
  *  - A date.
  *  - A list of tracks done in that date.
  */
-export type Entry = {
+export type Entry<T = number> = {
   /**
    * Date of the entry.
    * @type {string}
@@ -14,15 +14,15 @@ export type Entry = {
   date: string
   /**
    * List of tracks done in that date.
-   * @type {UniqueList}
+   * @type {UniqueList<T>}
    */
-  tracks: UniqueList
+  tracks: UniqueList<T>
 }
 
 /**
  * A class that stores an extended entry of a record in the app.
  */
-export type ExtendedEntry = Entry & {
-  users: UniqueList
+export type ExtendedEntry<T = number> = Entry<T> & {
+  users: UniqueList<T>
   km: number
 }

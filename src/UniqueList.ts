@@ -1,27 +1,14 @@
 /**
  * A class that stores a list of unique values.
  */
-export class UniqueList<T = number> {
-  /**
-   * List of values.
-   * @type {T[]}
-   */
-  private _values: T[] = []
-
+export class UniqueList<T = number> extends Array<T> {
   /**
    * Initializes the list with the given values.
    * @param values Values to be added to the list.
    */
   public constructor(...values: T[]) {
+    super()
     for (const value of values) this.add(value)
-  }
-
-  /**
-   * Getter for the values list.
-   * @returns The values list.
-   */
-  public get values(): T[] {
-    return this._values
   }
 
   /**
@@ -29,8 +16,8 @@ export class UniqueList<T = number> {
    * @param value Value to be checked.
    * @returns True if the value is in the list, false otherwise.
    */
-  private has(value: T): boolean {
-    for (const v of this._values)
+  public has(value: T): boolean {
+    for (const v of this)
       if (JSON.stringify(v) === JSON.stringify(value)) return true
     return false
   }
@@ -42,7 +29,7 @@ export class UniqueList<T = number> {
    */
   public add(value: T): boolean {
     if (this.has(value)) return false
-    this._values.push(value)
+    this.push(value)
     return true
   }
 
@@ -53,7 +40,7 @@ export class UniqueList<T = number> {
    */
   public remove(value: T): boolean {
     if (!this.has(value)) return false
-    this._values = this._values.filter((v) => v !== value)
+    this.splice(this.indexOf(value), 1)
     return true
   }
 }

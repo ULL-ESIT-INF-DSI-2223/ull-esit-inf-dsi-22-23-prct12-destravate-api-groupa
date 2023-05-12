@@ -5,20 +5,19 @@ import { ExtendedEntry } from './Entry.js'
 /**
  * Interface representing a group of users of the app.
  */
-export interface GroupInterface {
-  id: number
+export interface GroupInterface<T = number> {
   name: string
-  members: UniqueList
+  members: Array<T>
   stats: Stats
-  ranking: UniqueList
-  favorites: UniqueList
-  records: UniqueList<ExtendedEntry>
+  ranking: Array<T>
+  favorites: Array<T>
+  records: Array<ExtendedEntry<T>>
 }
 
 /**
  * Class representing a group of users of the app.
  */
-export class Group implements GroupInterface {
+export class Group<T = number> implements GroupInterface<T> {
   /**
    * Unique id of the group.
    * @type {number}
@@ -33,9 +32,9 @@ export class Group implements GroupInterface {
 
   /**
    * List of users of the group.
-   * @type {UniqueList}
+   * @type {UniqueList<T>}
    */
-  public members: UniqueList = new UniqueList()
+  public members: UniqueList<T> = new UniqueList<T>()
 
   /**
    * Stats of the group.
@@ -45,23 +44,24 @@ export class Group implements GroupInterface {
 
   /**
    * List of favorite tracks of the group.
-   * @type {UniqueList}
+   * @type {UniqueList<T>}
    */
-  public favorites: UniqueList = new UniqueList()
+  public favorites: UniqueList<T> = new UniqueList<T>()
 
   /**
    * List of records of the group.
-   * @type {UniqueList}
-   * @template {ExtendedEntry}
+   * @type {UniqueList<ExtendedEntry<T>>}
    */
-  public records: UniqueList<ExtendedEntry> = new UniqueList<ExtendedEntry>()
+  public records: UniqueList<ExtendedEntry<T>> = new UniqueList<
+    ExtendedEntry<T>
+  >()
 
   /**
    * Initializes a new instance of the Group class.
    * @param id Id of the group.
    * @param name Name of the group.
    */
-  public constructor(id: number, name: string, ...members: number[]) {
+  public constructor(id: number, name: string, ...members: T[]) {
     this.id = id
     this.name = name
     for (const member of members) this.members.add(member)
@@ -74,22 +74,40 @@ export class Group implements GroupInterface {
 
   /**
    * Gets the ranking of the group based on the records.
-   * @returns {UniqueList} Ranking of the group.
+   * @returns {UniqueList<T>} Ranking of the group.
    */
-  public get ranking(): UniqueList {
-    const ranking = new UniqueList()
-    const distances: { [id: number]: number } = {}
-    for (const record of this.records.values) {
-      for (const user of record.users.values) {
-        if (distances[user]) distances[user] += record.km
-        else distances[user] = record.km
+  public get ranking(): UniqueList<T> {
+    const ranking = new UniqueList<T>()
+    const distances: { [id: string]: number } = {}
+    for (const record of this.records) {
+      for (const user of record.users) {
+        if (distances[String(user)]) distances[String(user)] += record.km
+        else distances[String(user)] = record.km
       }
     }
     const sorted = Object.keys(distances).sort(
       (a, b) => distances[b] - distances[a]
     )
     for (const id of sorted)
-      if (this.members.values.includes(parseInt(id))) ranking.add(parseInt(id))
+      if (this.convertToT(id) && this.members.has(this.convertToT(id) as T))
+        ranking.add(this.convertToT(id) as T)
     return ranking
   }
+
+  /**
+   * Method to convert a value to the type T.
+   * @param value Value to be converted.
+   * @returns The value converted to T.
+   */
+  /* c8 ignore start */
+  private convertToT(value: any): T | null {
+    if (
+      typeof value === 'string' &&
+      typeof Number(value) === 'number' &&
+      !isNaN(Number(value))
+    )
+      return Number(value) as T
+    return null
+  }
+  /* c8 ignore stop */
 }

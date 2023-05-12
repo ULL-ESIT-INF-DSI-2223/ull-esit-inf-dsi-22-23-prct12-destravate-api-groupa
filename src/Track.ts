@@ -5,14 +5,13 @@ import { UniqueList } from './UniqueList.js'
 /**
  * Interface representing a track of the app.
  */
-export interface TrackInterface {
-  id: number
+export interface TrackInterface<T = number> {
   name: string
   start: Coordinate
   end: Coordinate
   distance: number
   slope: number
-  users_log: UniqueList
+  users_log: Array<T>
   activity: Activity
   score: number
 }
@@ -27,7 +26,7 @@ export interface TrackInterface {
  *  - An activity to do in the track.
  *  - A score.
  */
-export class Track {
+export class Track<T = number> implements TrackInterface<T> {
   /**
    * Unique id of the track.
    * @type {number}
@@ -67,9 +66,9 @@ export class Track {
 
   /**
    * List of users that have done the track.
-   * @type {UniqueList}
+   * @type {UniqueList<T>}
    */
-  public users_log: UniqueList = new UniqueList()
+  public users_log: UniqueList<T> = new UniqueList<T>()
 
   /**
    * Activity to do in the track.

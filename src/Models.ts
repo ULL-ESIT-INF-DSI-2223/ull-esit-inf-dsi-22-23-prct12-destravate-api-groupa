@@ -10,15 +10,11 @@ import { ChallengeInterface } from './Challenge.js'
 /**
  * Schema representing a track of the app.
  */
-export const TrackSchema = new Schema<TrackInterface>({
-  id: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
+export const TrackSchema = new Schema<TrackInterface<string>>({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   start: {
     type: Object,
@@ -37,7 +33,7 @@ export const TrackSchema = new Schema<TrackInterface>({
     required: true,
   },
   users_log: {
-    type: Array,
+    type: Schema.Types.Mixed,
     required: false,
   },
   activity: {
@@ -54,20 +50,16 @@ export const TrackSchema = new Schema<TrackInterface>({
 /**
  * Model for the Track schema.
  */
-export const TrackModel = model<TrackInterface>('Track', TrackSchema)
+export const TrackModel = model<TrackInterface<string>>('Track', TrackSchema)
 
 /**
  * Schema representing a user of the app.
  */
-export const UserSchema = new Schema<UserInterface>({
-  id: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
+export const UserSchema = new Schema<UserInterface<string>>({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   activity: {
     type: String,
@@ -75,11 +67,13 @@ export const UserSchema = new Schema<UserInterface>({
     enum: Object.values(Activity),
   },
   friends: {
-    type: Array,
+    type: Schema.Types.Mixed,
+    ref: 'User',
     required: false,
   },
   groups: {
-    type: Array,
+    type: Schema.Types.Mixed,
+    ref: 'Group',
     required: false,
   },
   stats: {
@@ -87,15 +81,17 @@ export const UserSchema = new Schema<UserInterface>({
     required: false,
   },
   favorites: {
-    type: Array,
+    type: Schema.Types.Mixed,
+    ref: 'Track',
     required: false,
   },
   challenges: {
-    type: Array,
+    type: Schema.Types.Mixed,
+    ref: 'Challenge',
     required: false,
   },
   records: {
-    type: Array,
+    type: Schema.Types.Mixed,
     required: false,
   },
 })
@@ -103,23 +99,20 @@ export const UserSchema = new Schema<UserInterface>({
 /**
  * Model for the User schema.
  */
-export const UserModel = model<UserInterface>('User', UserSchema)
+export const UserModel = model<UserInterface<string>>('User', UserSchema)
 
 /**
  * Schema representing a group of the app.
  */
-export const GroupSchema = new Schema<GroupInterface>({
-  id: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
+export const GroupSchema = new Schema<GroupInterface<string>>({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   members: {
-    type: Array,
+    type: Schema.Types.Mixed,
+    ref: 'User',
     required: false,
   },
   stats: {
@@ -127,15 +120,17 @@ export const GroupSchema = new Schema<GroupInterface>({
     required: false,
   },
   ranking: {
-    type: Array,
+    type: Schema.Types.Mixed,
+    ref: 'User',
     required: false,
   },
   favorites: {
-    type: Array,
+    type: Schema.Types.Mixed,
+    ref: 'Track',
     required: false,
   },
   records: {
-    type: Array,
+    type: Schema.Types.Mixed,
     required: false,
   },
 })
@@ -143,20 +138,16 @@ export const GroupSchema = new Schema<GroupInterface>({
 /**
  * Model for the Group schema.
  */
-export const GroupModel = model<GroupInterface>('Group', GroupSchema)
+export const GroupModel = model<GroupInterface<string>>('Group', GroupSchema)
 
 /**
  * Schema representing a challenge of the app.
  */
-export const ChallengeSchema = new Schema<ChallengeInterface>({
-  id: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
+export const ChallengeSchema = new Schema<ChallengeInterface<string>>({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   activity: {
     type: String,
@@ -164,11 +155,13 @@ export const ChallengeSchema = new Schema<ChallengeInterface>({
     enum: Object.values(Activity),
   },
   tracks: {
-    type: Array,
+    type: Schema.Types.Mixed,
+    ref: 'Track',
     required: false,
   },
   users: {
-    type: Array,
+    type: Schema.Types.Mixed,
+    ref: 'User',
     required: false,
   },
 })
@@ -176,7 +169,7 @@ export const ChallengeSchema = new Schema<ChallengeInterface>({
 /**
  * Model for the Challenge schema.
  */
-export const ChallengeModel = model<ChallengeInterface>(
+export const ChallengeModel = model<ChallengeInterface<string>>(
   'Challenge',
   ChallengeSchema
 )

@@ -4,18 +4,17 @@ import { UniqueList } from './UniqueList.js'
 /**
  * Interface representing a challenge of the app.
  */
-export interface ChallengeInterface {
-  id: number
+export interface ChallengeInterface<T = number> {
   name: string
   activity: Activity
-  tracks: UniqueList
-  users: UniqueList
+  tracks: Array<T>
+  users: Array<T>
 }
 
 /**
  * Class representing a challenge of the app.
  */
-export class Challenge implements ChallengeInterface {
+export class Challenge<T = number> implements ChallengeInterface<T> {
   /**
    * Unique id of the challenge.
    * @type {number}
@@ -36,15 +35,15 @@ export class Challenge implements ChallengeInterface {
 
   /**
    * List of tracks of the challenge.
-   * @type {UniqueList}
+   * @type {UniqueList<T>}
    */
-  public tracks: UniqueList = new UniqueList()
+  public tracks: UniqueList<T> = new UniqueList<T>()
 
   /**
    * List of users of the challenge.
-   * @type {UniqueList}
+   * @type {UniqueList<T>}
    */
-  public users: UniqueList = new UniqueList()
+  public users: UniqueList<T> = new UniqueList<T>()
 
   /**
    * Initializes a new instance of the Challenge class.

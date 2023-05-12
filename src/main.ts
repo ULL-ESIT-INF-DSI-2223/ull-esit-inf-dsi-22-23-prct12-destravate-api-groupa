@@ -40,6 +40,7 @@ const UserData = (yargs: yargs.Argv<StartOptions>) => {
  * Main function of the app for testing purposes.
  */
 function main() {
+  new Server().start(3000)
   const commands = yargs(hideBin(process.argv))
     .command('start', 'Starts the server', UserData, (argv) => {
       const server = new Server()

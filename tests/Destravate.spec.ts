@@ -1,5 +1,6 @@
 import 'mocha'
 import { expect } from 'chai'
+import request from 'supertest'
 
 import { UniqueList } from '../src/UniqueList.js'
 import { Activity } from '../src/Activity.js'
@@ -13,7 +14,7 @@ import { Server } from '../src/Server.js'
 let server: Server
 before(async function () {
   server = new Server()
-  await server.start()
+  await server.start(3000)
 })
 
 describe('Destravate app tests', () => {
@@ -68,8 +69,8 @@ describe('Destravate app tests', () => {
       expect(track1.slope).to.equal(0.5)
     })
     it('Track Objects should have a list of users that have done the track', () => {
-      expect(track1.users_log.values).to.be.a('array')
-      expect(track1.users_log.values).to.have.lengthOf(0)
+      expect(track1.users_log).to.be.a('array')
+      expect(track1.users_log).to.have.lengthOf(0)
     })
     it('Track Objects should have an activity', () => {
       expect(Object.values(Activity)).to.include(track1.activity)
@@ -95,32 +96,32 @@ describe('Destravate app tests', () => {
     })
 
     it('User Objects should have a list of friends', () => {
-      expect(user.friends.values).to.be.a('array')
-      expect(user.friends.values).to.have.lengthOf(0)
+      expect(user.friends).to.be.a('array')
+      expect(user.friends).to.have.lengthOf(0)
     })
     it('User Objects should be able to add friends', () => {
       user.friends.add(1)
-      expect(user.friends.values).to.have.lengthOf(1)
-      expect(user.friends.values).to.include(1)
+      expect(user.friends).to.have.lengthOf(1)
+      expect(user.friends).to.include(1)
     })
     it('User Objects should be able to remove friends', () => {
       user.friends.remove(1)
-      expect(user.friends.values).to.have.lengthOf(0)
-      expect(user.friends.values).to.not.include(1)
+      expect(user.friends).to.have.lengthOf(0)
+      expect(user.friends).to.not.include(1)
     })
     it('User Objects should have a list of groups in which the user is', () => {
-      expect(user.groups.values).to.be.a('array')
-      expect(user.groups.values).to.have.lengthOf(0)
+      expect(user.groups).to.be.a('array')
+      expect(user.groups).to.have.lengthOf(0)
     })
     it('User Objects should be able to add groups', () => {
       user.groups.add(1)
-      expect(user.groups.values).to.have.lengthOf(1)
-      expect(user.groups.values).to.include(1)
+      expect(user.groups).to.have.lengthOf(1)
+      expect(user.groups).to.include(1)
     })
     it('User Objects should be able to remove groups', () => {
       user.groups.remove(1)
-      expect(user.groups.values).to.have.lengthOf(0)
-      expect(user.groups.values).to.not.include(1)
+      expect(user.groups).to.have.lengthOf(0)
+      expect(user.groups).to.not.include(1)
     })
     it('User Objects should have stats', () => {
       expect(Object.keys(user.stats.values)).includes('weekly')
@@ -134,41 +135,41 @@ describe('Destravate app tests', () => {
       expect(user.stats.values['yearly']).to.be.deep.equal({ km: 0, slope: 0 })
     })
     it('User Objects should have a list of favorite tracks', () => {
-      expect(user.favorites.values).to.be.a('array')
-      expect(user.favorites.values).to.have.lengthOf(0)
+      expect(user.favorites).to.be.a('array')
+      expect(user.favorites).to.have.lengthOf(0)
     })
     it('User Objects should be able to add favorite tracks', () => {
       user.favorites.add(1)
-      expect(user.favorites.values).to.have.lengthOf(1)
-      expect(user.favorites.values).to.include(1)
+      expect(user.favorites).to.have.lengthOf(1)
+      expect(user.favorites).to.include(1)
     })
     it('User Objects should be able to remove favorite tracks', () => {
       user.favorites.remove(1)
-      expect(user.favorites.values).to.have.lengthOf(0)
-      expect(user.favorites.values).to.not.include(1)
+      expect(user.favorites).to.have.lengthOf(0)
+      expect(user.favorites).to.not.include(1)
     })
     it('User Objects should have a list of active challenges', () => {
-      expect(user.challenges.values).to.be.a('array')
-      expect(user.challenges.values).to.have.lengthOf(0)
+      expect(user.challenges).to.be.a('array')
+      expect(user.challenges).to.have.lengthOf(0)
     })
     it('User Objects should be able to add active challenges', () => {
       user.challenges.add(1)
-      expect(user.challenges.values).to.have.lengthOf(1)
-      expect(user.challenges.values).to.include(1)
+      expect(user.challenges).to.have.lengthOf(1)
+      expect(user.challenges).to.include(1)
     })
     it('User Objects should be able to remove active challenges', () => {
       user.challenges.remove(1)
-      expect(user.challenges.values).to.have.lengthOf(0)
-      expect(user.challenges.values).to.not.include(1)
+      expect(user.challenges).to.have.lengthOf(0)
+      expect(user.challenges).to.not.include(1)
     })
     it('User Objects should have a record of the tracks done', () => {
-      expect(user.records.values).to.be.a('array')
-      expect(user.records.values).to.have.lengthOf(0)
+      expect(user.records).to.be.a('array')
+      expect(user.records).to.have.lengthOf(0)
     })
     it('User Objects should be able to add records', () => {
       user.records.add({ date: '2019-01-01', tracks: new UniqueList(1, 2, 3) })
-      expect(user.records.values).to.have.lengthOf(1)
-      expect(user.records.values).to.be.deep.equal([
+      expect(user.records).to.have.lengthOf(1)
+      expect(user.records).to.be.deep.equal([
         { date: '2019-01-01', tracks: new UniqueList(1, 2, 3) },
       ])
     })
@@ -214,18 +215,18 @@ describe('Destravate app tests', () => {
       expect(group.name).to.equal('Canary Team')
     })
     it('Group Objects should have a list of users', () => {
-      expect(group.members.values).to.be.a('array')
-      expect(group.members.values).to.have.lengthOf(2)
+      expect(group.members).to.be.a('array')
+      expect(group.members).to.have.lengthOf(2)
     })
     it('Group Objects should be able to add users', () => {
       group.members.add(1)
-      expect(group.members.values).to.have.lengthOf(3)
-      expect(group.members.values).to.include(1)
+      expect(group.members).to.have.lengthOf(3)
+      expect(group.members).to.include(1)
     })
     it('Group Objects should be able to remove users', () => {
       group.members.remove(1)
-      expect(group.members.values).to.have.lengthOf(2)
-      expect(group.members.values).to.not.include(1)
+      expect(group.members).to.have.lengthOf(2)
+      expect(group.members).to.not.include(1)
     })
     it('Group Objects should have stats', () => {
       expect(Object.keys(group.stats.values)).includes('weekly')
@@ -242,22 +243,22 @@ describe('Destravate app tests', () => {
       expect(group.stats.values['yearly']).to.be.deep.equal({ km: 0, slope: 0 })
     })
     it('Group Objects should have a list of favorite tracks', () => {
-      expect(group.favorites.values).to.be.a('array')
-      expect(group.favorites.values).to.have.lengthOf(0)
+      expect(group.favorites).to.be.a('array')
+      expect(group.favorites).to.have.lengthOf(0)
     })
     it('Group Objects should be able to add favorite tracks', () => {
       group.favorites.add(1)
-      expect(group.favorites.values).to.have.lengthOf(1)
-      expect(group.favorites.values).to.include(1)
+      expect(group.favorites).to.have.lengthOf(1)
+      expect(group.favorites).to.include(1)
     })
     it('Group Objects should be able to remove favorite tracks', () => {
       group.favorites.remove(1)
-      expect(group.favorites.values).to.have.lengthOf(0)
-      expect(group.favorites.values).to.not.include(1)
+      expect(group.favorites).to.have.lengthOf(0)
+      expect(group.favorites).to.not.include(1)
     })
     it('Group Objects should have a record of the tracks done', () => {
-      expect(group.records.values).to.be.a('array')
-      expect(group.records.values).to.have.lengthOf(0)
+      expect(group.records).to.be.a('array')
+      expect(group.records).to.have.lengthOf(0)
     })
     it('Group Objects should be able to add records', () => {
       group.records.add({
@@ -266,8 +267,8 @@ describe('Destravate app tests', () => {
         users: new UniqueList(1, 2, 3),
         km: 10,
       })
-      expect(group.records.values).to.have.lengthOf(1)
-      expect(group.records.values).to.be.deep.equal([
+      expect(group.records).to.have.lengthOf(1)
+      expect(group.records).to.be.deep.equal([
         {
           date: '2019-01-01',
           tracks: new UniqueList(1, 2, 3),
@@ -312,11 +313,11 @@ describe('Destravate app tests', () => {
       group.records.add({
         date: '2023-01-01',
         tracks: new UniqueList(1, 3),
-        users: new UniqueList(1),
+        users: new UniqueList(3),
         km: 250,
       })
-      expect(group.ranking.values).to.be.a('array')
-      expect(group.ranking.values).to.have.lengthOf(2)
+      expect(group.ranking).to.be.a('array')
+      expect(group.ranking).to.have.lengthOf(2)
     })
   })
 
@@ -340,31 +341,31 @@ describe('Destravate app tests', () => {
       expect(Object.values(Activity)).to.include(challenge.activity)
     })
     it('Challenge Objects should have a list of tracks that are part of the challenge', () => {
-      expect(challenge.tracks.values).to.be.a('array')
-      expect(challenge.tracks.values).to.have.lengthOf(2)
-      expect(challenge.tracks.values).to.be.deep.equal([0, 1])
+      expect(challenge.tracks).to.be.a('array')
+      expect(challenge.tracks).to.have.lengthOf(2)
+      expect(challenge.tracks).to.be.deep.equal([0, 1])
     })
     it('Challenge Objects should be able to add tracks', () => {
       challenge.tracks.add(2)
-      expect(challenge.tracks.values).to.have.lengthOf(3)
+      expect(challenge.tracks).to.have.lengthOf(3)
     })
     it('Challenge Objects should be able to remove tracks', () => {
       challenge.tracks.remove(2)
-      expect(challenge.tracks.values).to.have.lengthOf(2)
+      expect(challenge.tracks).to.have.lengthOf(2)
     })
     it('Challenge Objects should have a list of users that are part of the challenge', () => {
-      expect(challenge.users.values).to.be.a('array')
-      expect(challenge.users.values).to.have.lengthOf(0)
+      expect(challenge.users).to.be.a('array')
+      expect(challenge.users).to.have.lengthOf(0)
     })
     it('Challenge Objects should be able to add users', () => {
       challenge.users.add(1)
-      expect(challenge.users.values).to.have.lengthOf(1)
-      expect(challenge.users.values).to.include(1)
+      expect(challenge.users).to.have.lengthOf(1)
+      expect(challenge.users).to.include(1)
     })
     it('Challenge Objects should be able to remove users', () => {
       challenge.users.remove(1)
-      expect(challenge.users.values).to.have.lengthOf(0)
-      expect(challenge.users.values).to.not.include(1)
+      expect(challenge.users).to.have.lengthOf(0)
+      expect(challenge.users).to.not.include(1)
     })
     it('Challenge Objects should know if the user/track is in the list when adding', () => {
       challenge.users.add(1)
@@ -377,7 +378,9 @@ describe('Destravate app tests', () => {
       expect(challenge.tracks.remove(2)).to.be.false
     })
   })
-  describe('Server class tests', () => {})
+  describe('Server class tests', () => {
+    it("Servers should be able to make GET requests to the server's API", async () => {})
+  })
 })
 
 after(async function () {

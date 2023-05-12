@@ -6,22 +6,21 @@ import { Entry } from './Entry.js'
 /**
  * Interface representing a user of the app.
  */
-export interface UserInterface {
-  id: number
+export interface UserInterface<T = number> {
   name: string
   activity: Activity
-  friends: UniqueList
-  groups: UniqueList
   stats: Stats
-  favorites: UniqueList
-  challenges: UniqueList
-  records: UniqueList<Entry>
+  friends: T[]
+  groups: T[]
+  favorites: T[]
+  challenges: T[]
+  records: Entry<T>[]
 }
 
 /**
  * Class representing a user of the app.
  */
-export class User implements UserInterface {
+export class User<T = number> implements UserInterface<T> {
   /**
    * Unique id of the user.
    * @type {number}
@@ -43,15 +42,15 @@ export class User implements UserInterface {
 
   /**
    * List of friends of the user.
-   * @type {UniqueList}
+   * @type {UniqueList<T>}
    */
-  public friends: UniqueList = new UniqueList()
+  public friends: UniqueList<T> = new UniqueList<T>()
 
   /**
    * List of groups of the user.
-   * @type {UniqueList}
+   * @type {UniqueList<T>}
    */
-  public groups: UniqueList = new UniqueList()
+  public groups: UniqueList<T> = new UniqueList<T>()
 
   /**
    * Stats of the user.
@@ -61,22 +60,22 @@ export class User implements UserInterface {
 
   /**
    * List of favorite tracks of the user.
-   * @type {UniqueList}
+   * @type {UniqueList<T>}
    */
-  public favorites: UniqueList = new UniqueList()
+  public favorites: UniqueList<T> = new UniqueList<T>()
 
   /**
    * List of active challenges of the user.
-   * @type {UniqueList}
+   * @type {UniqueList<T>}
    */
-  public challenges: UniqueList = new UniqueList()
+  public challenges: UniqueList<T> = new UniqueList<T>()
 
   /**
    * List of tracks done by the user grouped by date.
    * @type {UniqueList}
-   * @template {Entry}
+   * @template {Entry<T>}
    */
-  public records: UniqueList<Entry> = new UniqueList<Entry>()
+  public records: UniqueList<Entry<T>> = new UniqueList<Entry<T>>()
 
   /**
    * Initializes a new instance of the User class.
