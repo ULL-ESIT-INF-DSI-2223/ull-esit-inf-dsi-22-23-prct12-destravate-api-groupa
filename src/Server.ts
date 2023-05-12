@@ -211,19 +211,35 @@ export class Server {
             case '/tracks':
               document = new TrackModel(body)
               this.createReferencesToTrack(document)
+                .then(() => {})
+                .catch((err) => {
+                  res.status(500).json({ message: err })
+                })
               break
             case '/users':
               document = new UserModel(body)
               this.createReferencesToUser(document)
+                .then(() => {})
+                .catch((err) => {
+                  res.status(500).json({ message: err })
+                })
               break
             case '/groups':
               body = this.updateRanking(body)
               document = new GroupModel(body)
               this.createReferencesToGroup(document)
+                .then(() => {})
+                .catch((err) => {
+                  res.status(500).json({ message: err })
+                })
               break
             case '/challenges':
               document = new ChallengeModel(body)
               this.createReferencesToChallenge(document)
+                .then(() => {})
+                .catch((err) => {
+                  res.status(500).json({ message: err })
+                })
               break
             default:
               break
@@ -370,6 +386,10 @@ export class Server {
             .deleteOne({ id: parseInt(req.params.id as string) })
             .then((result) => {
               this.deleteReferencesFromUser(req.params.id)
+                .then(() => {})
+                .catch((err) => {
+                  res.status(500).json({ message: err })
+                })
               res.status(200).json({ message: 'Deleted', result: result })
             })
             .catch((err) => {
@@ -382,6 +402,10 @@ export class Server {
               if (result) {
                 if (model === UserModel)
                   this.deleteReferencesFromUser(result.id)
+                    .then(() => {})
+                    .catch((err) => {
+                      res.status(500).json({ message: err })
+                    })
               }
             })
             .catch((err) => {

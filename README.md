@@ -24,7 +24,7 @@ export enum Activity {
 }
 ```
 
-Este código define una enumeración llamada ```Activity``` que contiene tres valores posibles: ```running```, ```cycling``` y ```hiking```.
+Este código define una enumeración llamada `Activity` que contiene tres valores posibles: `running`, `cycling` y `hiking`.
 
 ### Challenge.ts
 
@@ -62,12 +62,11 @@ export class Challenge<T = number> implements ChallengeInterface<T> {
 }
 ```
 
-Este código es una definición de una clase llamada ```Challenge``` que implementa una interfaz llamada ```ChallengeInterface```. La clase Challenge tiene cuatro propiedades: ```id```, ```name```, ```activity```, ```tracks``` y ```users```.
+Este código es una definición de una clase llamada `Challenge` que implementa una interfaz llamada `ChallengeInterface`. La clase Challenge tiene cuatro propiedades: `id`, `name`, `activity`, `tracks` y `users`.
 
-La propiedad ```id``` es de solo lectura y se establece en el constructor. La propiedad ```name``` es una cadena que representa el nombre del desafío. La propiedad ```activity``` es un objeto de la clase ```Activity``` que representa la actividad asociada con el desafío. Las propiedades ```tracks``` y ```users``` son matrices de tipo genérico ```T``` que se implementan como objetos de la clase ```UniqueList```.
+La propiedad `id` es de solo lectura y se establece en el constructor. La propiedad `name` es una cadena que representa el nombre del desafío. La propiedad `activity` es un objeto de la clase `Activity` que representa la actividad asociada con el desafío. Las propiedades `tracks` y `users` son matrices de tipo genérico `T` que se implementan como objetos de la clase `UniqueList`.
 
-El constructor de la clase Challenge toma cuatro argumentos: ```id```, ```name```, ```activity``` y ```tracks```. El argumento ```id``` se utiliza para establecer la propiedad ```id``` de solo lectura. El argumento ```name``` se utiliza para establecer la propiedad ```name```. El argumento ```activity``` se utiliza para establecer la propiedad ```activity```. El argumento ```tracks``` es un número variable
-
+El constructor de la clase Challenge toma cuatro argumentos: `id`, `name`, `activity` y `tracks`. El argumento `id` se utiliza para establecer la propiedad `id` de solo lectura. El argumento `name` se utiliza para establecer la propiedad `name`. El argumento `activity` se utiliza para establecer la propiedad `activity`. El argumento `tracks` es un número variable
 
 ### Coordinate.ts
 
@@ -82,7 +81,7 @@ export type Coordinate = {
 }
 ```
 
-Este código define un tipo de dato llamado ```Coordinate``` que representa una coordenada geográfica. El tipo de dato tiene dos propiedades: ```lat``` y ```lng```, que representan la latitud y longitud de la coordenada, respectivamente. Ambas propiedades son de tipo ```number```, lo que significa que deben ser valores numéricos.
+Este código define un tipo de dato llamado `Coordinate` que representa una coordenada geográfica. El tipo de dato tiene dos propiedades: `lat` y `lng`, que representan la latitud y longitud de la coordenada, respectivamente. Ambas propiedades son de tipo `number`, lo que significa que deben ser valores numéricos.
 
 ### Entry.ts
 
@@ -104,9 +103,9 @@ export type ExtendedEntry<T = number> = Entry<T> & {
 }
 ```
 
-Este código define dos tipos de datos: ```Entry``` y ```ExtendedEntry```. Ambos tipos tienen una propiedad date que es una cadena de texto y una propiedad tracks que es una lista única de elementos de tipo ```T```.
+Este código define dos tipos de datos: `Entry` y `ExtendedEntry`. Ambos tipos tienen una propiedad date que es una cadena de texto y una propiedad tracks que es una lista única de elementos de tipo `T`.
 
-El tipo ```ExtendedEntry``` extiende el tipo Entry y agrega dos nuevas propiedades: ```users```, que es una lista única de elementos de tipo ```T```, y km, que es un número.`
+El tipo `ExtendedEntry` extiende el tipo Entry y agrega dos nuevas propiedades: `users`, que es una lista única de elementos de tipo `T`, y km, que es un número.`
 
 ### Group.ts
 
@@ -185,14 +184,13 @@ export class Group<T = number> implements GroupInterface<T> {
 }
 ```
 
-Este código define una clase llamada ```Group``` que implementa la interfaz ```GroupInterface```. La interfaz ```GroupInterface``` define una estructura de datos que representa un grupo de usuarios y sus estadísticas de actividad física. La clase ```Group``` tiene propiedades como ```name```, ```users```, ```stats```, ```tracks```, ```records``` y ```ranking```, que representan el nombre del grupo, la lista de usuarios, las estadísticas de actividad física, las pistas, los registros y la clasificación de los usuarios en función de su actividad física.
+Este código define una clase llamada `Group` que implementa la interfaz `GroupInterface`. La interfaz `GroupInterface` define una estructura de datos que representa un grupo de usuarios y sus estadísticas de actividad física. La clase `Group` tiene propiedades como `name`, `users`, `stats`, `tracks`, `records` y `ranking`, que representan el nombre del grupo, la lista de usuarios, las estadísticas de actividad física, las pistas, los registros y la clasificación de los usuarios en función de su actividad física.
 
-La clase ```Group``` tiene un constructor que toma un ```id```, un ```name``` y una lista de ```users```. El constructor inicializa las propiedades ```id``` y ```name``` y agrega los usuarios a la lista de usuarios.
+La clase `Group` tiene un constructor que toma un `id`, un `name` y una lista de `users`. El constructor inicializa las propiedades `id` y `name` y agrega los usuarios a la lista de usuarios.
 
-La propiedad ```ranking``` es una lista de usuarios ordenados por su actividad física. La propiedad ```records``` es una lista de registros de actividad física de los usuarios. La propiedad ```stats``` es un objeto que contiene las estadísticas de actividad física del grupo.
+La propiedad `ranking` es una lista de usuarios ordenados por su actividad física. La propiedad `records` es una lista de registros de actividad física de los usuarios. La propiedad `stats` es un objeto que contiene las estadísticas de actividad física del grupo.
 
-La clase ```Group``` también tiene un método privado llamado ```convertToT``` que convierte un valor a un tipo genérico ```T```. Este método se utiliza para convertir los identificadores de usuario de tipo ```string``` a un tipo genérico ```T```.
-
+La clase `Group` también tiene un método privado llamado `convertToT` que convierte un valor a un tipo genérico `T`. Este método se utiliza para convertir los identificadores de usuario de tipo `string` a un tipo genérico `T`.
 
 ### Models.ts
 
@@ -352,10 +350,9 @@ export const ChallengeModel = model<ChallengeInterface<string>>(
 )
 ```
 
-En este código, se definen cuatro esquemas: ```Track```, ```User```, ```Group``` y ```Challenge```. Cada uno de ellos tiene diferentes campos que definen la estructura de los documentos que se almacenarán en la base de datos. Por ejemplo, el esquema Track tiene campos como ```name```, ```start```, ```end```, ```distance```, ```slope```, ```users```, ```activity``` y ```score```.
+En este código, se definen cuatro esquemas: `Track`, `User`, `Group` y `Challenge`. Cada uno de ellos tiene diferentes campos que definen la estructura de los documentos que se almacenarán en la base de datos. Por ejemplo, el esquema Track tiene campos como `name`, `start`, `end`, `distance`, `slope`, `users`, `activity` y `score`.
 
-Cada esquema se utiliza para crear un modelo correspondiente utilizando la función ```model``` de Mongoose. Por ejemplo, el modelo Track se crea utilizando ```TrackModel = model<TrackInterface<string>>('Track', TrackSchema)```.
-
+Cada esquema se utiliza para crear un modelo correspondiente utilizando la función `model` de Mongoose. Por ejemplo, el modelo Track se crea utilizando `TrackModel = model<TrackInterface<string>>('Track', TrackSchema)`.
 
 ### Server.ts
 
@@ -858,13 +855,13 @@ export class Stats {
 }
 ```
 
-Este código define una interfaz ```Stat``` y una clase ```Stats```. 
+Este código define una interfaz `Stat` y una clase `Stats`.
 
-La interfaz ```Stat``` define un objeto que tiene dos propiedades: ```km``` y ```slope```, ambas de tipo número. 
+La interfaz `Stat` define un objeto que tiene dos propiedades: `km` y `slope`, ambas de tipo número.
 
-La clase ```Stats``` tiene una propiedad pública llamada ```values``` que es un objeto que tiene claves de tipo string y valores de tipo ```Stat```. El constructor de la clase inicializa la propiedad ```values``` como un objeto vacío.
+La clase `Stats` tiene una propiedad pública llamada `values` que es un objeto que tiene claves de tipo string y valores de tipo `Stat`. El constructor de la clase inicializa la propiedad `values` como un objeto vacío.
 
-La clase ```Stats``` también tiene un método público llamado ```reset()``` que no devuelve nada (void). Este método itera sobre todas las claves del objeto ```values``` y establece los valores de ```km``` y ```slope``` en cero.
+La clase `Stats` también tiene un método público llamado `reset()` que no devuelve nada (void). Este método itera sobre todas las claves del objeto `values` y establece los valores de `km` y `slope` en cero.
 
 ### Track.ts
 
@@ -926,13 +923,13 @@ export class Track<T = number> implements TrackInterface<T> {
 }
 ```
 
-Este código define una interfaz ```TrackInterface``` y una clase ```Track```. 
+Este código define una interfaz `TrackInterface` y una clase `Track`.
 
-La interfaz ```TrackInterface``` define un objeto que tiene varias propiedades, incluyendo ```name```, ```start```, ```end```, ```distance```, ```slope```, ```users```, ```activity``` y ```score```. Algunas de estas propiedades tienen tipos genéricos, lo que significa que pueden ser de cualquier tipo.
+La interfaz `TrackInterface` define un objeto que tiene varias propiedades, incluyendo `name`, `start`, `end`, `distance`, `slope`, `users`, `activity` y `score`. Algunas de estas propiedades tienen tipos genéricos, lo que significa que pueden ser de cualquier tipo.
 
-La clase ```Track``` implementa la interfaz ```TrackInterface``` y tiene varias propiedades públicas, incluyendo ```id```, ```name```, ```start```, ```end```, ```distance```, ```slope```, ```users```, ```activity``` y ```score```. La propiedad ```id``` es de solo lectura y se establece en el constructor. Las propiedades ```name```, ```start```, ```end```, ```distance```, ```slope``` y ```activity``` se establecen en el constructor y se pueden modificar posteriormente. La propiedad ```users``` es una instancia de la clase ```UniqueList```, que es una lista que solo permite valores únicos.
+La clase `Track` implementa la interfaz `TrackInterface` y tiene varias propiedades públicas, incluyendo `id`, `name`, `start`, `end`, `distance`, `slope`, `users`, `activity` y `score`. La propiedad `id` es de solo lectura y se establece en el constructor. Las propiedades `name`, `start`, `end`, `distance`, `slope` y `activity` se establecen en el constructor y se pueden modificar posteriormente. La propiedad `users` es una instancia de la clase `UniqueList`, que es una lista que solo permite valores únicos.
 
-La clase ```Track``` también tiene un constructor que toma varios argumentos, incluyendo ```id```, ```name```, ```start```, ```end```, ```distance```, ```slope``` y ```activity```. Este constructor inicializa las propiedades correspondientes con los valores proporcionados.
+La clase `Track` también tiene un constructor que toma varios argumentos, incluyendo `id`, `name`, `start`, `end`, `distance`, `slope` y `activity`. Este constructor inicializa las propiedades correspondientes con los valores proporcionados.
 
 ### UniqueList.ts
 
@@ -966,17 +963,16 @@ export class UniqueList<T = number> extends Array<T> {
 }
 ```
 
-Este código define una clase ```UniqueList``` en TypeScript que extiende la clase nativa ```Array```. Esta clase se utiliza para almacenar una lista de valores únicos.
+Este código define una clase `UniqueList` en TypeScript que extiende la clase nativa `Array`. Esta clase se utiliza para almacenar una lista de valores únicos.
 
-El constructor de la clase acepta un número variable de argumentos y los agrega a la lista utilizando el método ```add()```.
-La clase tiene tres métodos públicos: ```has()```, ```add()``` y ```remove()```.
+El constructor de la clase acepta un número variable de argumentos y los agrega a la lista utilizando el método `add()`.
+La clase tiene tres métodos públicos: `has()`, `add()` y `remove()`.
 
-- El método ```has()``` se utiliza para verificar si un valor ya está en la lista. El método itera sobre la lista y compara cada valor con el valor proporcionado utilizando ```JSON.stringify()```. Si encuentra una coincidencia, devuelve ```true```, de lo contrario, devuelve ```false```.
+- El método `has()` se utiliza para verificar si un valor ya está en la lista. El método itera sobre la lista y compara cada valor con el valor proporcionado utilizando `JSON.stringify()`. Si encuentra una coincidencia, devuelve `true`, de lo contrario, devuelve `false`.
 
-- El método ```add()``` se utiliza para agregar un valor a la lista. Primero, verifica si el valor ya está en la lista utilizando el método ```has()```. Si el valor ya está en la lista, devuelve ```false```. De lo contrario, agrega el valor a la lista utilizando el método ```push()``` y devuelve ```true```.
+- El método `add()` se utiliza para agregar un valor a la lista. Primero, verifica si el valor ya está en la lista utilizando el método `has()`. Si el valor ya está en la lista, devuelve `false`. De lo contrario, agrega el valor a la lista utilizando el método `push()` y devuelve `true`.
 
-- El método ```remove()``` se utiliza para eliminar un valor de la lista. Primero, verifica si el valor está en la lista utilizando el método ```has()```. Si el valor no está en la lista, devuelve ```false```. De lo contrario, utiliza el método ```splice()``` para eliminar el valor de la lista y devuelve ```true```.
-
+- El método `remove()` se utiliza para eliminar un valor de la lista. Primero, verifica si el valor está en la lista utilizando el método `has()`. Si el valor no está en la lista, devuelve `false`. De lo contrario, utiliza el método `splice()` para eliminar el valor de la lista y devuelve `true`.
 
 ### User.ts
 
@@ -1032,13 +1028,13 @@ export class User<T = number> implements UserInterface<T> {
 }
 ```
 
-Este código define una interfaz ```UserInterface``` y una clase ```User```.
+Este código define una interfaz `UserInterface` y una clase `User`.
 
-La interfaz ```UserInterface``` define un objeto que tiene varias propiedades, incluyendo ```name```, ```activity```, ```stats```, ```users```, ```groups```, ```tracks```, ```challenges``` y ```records```. Algunas de estas propiedades tienen tipos genéricos, lo que significa que pueden ser de cualquier tipo.
+La interfaz `UserInterface` define un objeto que tiene varias propiedades, incluyendo `name`, `activity`, `stats`, `users`, `groups`, `tracks`, `challenges` y `records`. Algunas de estas propiedades tienen tipos genéricos, lo que significa que pueden ser de cualquier tipo.
 
-La clase ```User``` implementa la interfaz ```UserInterface``` y tiene varias propiedades públicas, incluyendo ```id```, ```name```, ```activity```, ```users```, ```groups```, ```stats```, ```tracks```, ```challenges``` y ```records```. Las propiedades ```id```, ```name``` y ```activity``` se establecen en el constructor y se pueden modificar posteriormente. Las propiedades ```users```, ```groups```, ```tracks```, ```challenges``` y ```records``` son instancias de la clase ```UniqueList```, que es una lista que solo permite valores únicos. La propiedad ```stats``` es una instancia de la clase ```Stats```, que se utiliza para almacenar estadísticas de actividad física.
+La clase `User` implementa la interfaz `UserInterface` y tiene varias propiedades públicas, incluyendo `id`, `name`, `activity`, `users`, `groups`, `stats`, `tracks`, `challenges` y `records`. Las propiedades `id`, `name` y `activity` se establecen en el constructor y se pueden modificar posteriormente. Las propiedades `users`, `groups`, `tracks`, `challenges` y `records` son instancias de la clase `UniqueList`, que es una lista que solo permite valores únicos. La propiedad `stats` es una instancia de la clase `Stats`, que se utiliza para almacenar estadísticas de actividad física.
 
-El constructor de la clase ```User``` toma tres argumentos: ```id```, ```name``` y ```activity```. Este constructor inicializa las propiedades correspondientes con los valores proporcionados. También inicializa la propiedad ```stats``` con valores predeterminados para las estadísticas semanales, mensuales y anuales.
+El constructor de la clase `User` toma tres argumentos: `id`, `name` y `activity`. Este constructor inicializa las propiedades correspondientes con los valores proporcionados. También inicializa la propiedad `stats` con valores predeterminados para las estadísticas semanales, mensuales y anuales.
 
 ### main.ts
 
@@ -1054,15 +1050,15 @@ function main() {
 main()
 ```
 
-Este código define una función ```main()``` que crea una instancia de la clase ```Server``` y llama al método ```start()``` con el argumento 3000. Luego, la función ```main()``` se llama para iniciar el servidor.
+Este código define una función `main()` que crea una instancia de la clase `Server` y llama al método `start()` con el argumento 3000. Luego, la función `main()` se llama para iniciar el servidor.
 
-La clase ```Server``` se utiliza para crear un servidor web utilizando Node.js y Express. El método ```start()``` se utiliza para iniciar el servidor en un puerto específico. En este caso, el servidor se iniciará en el puerto 3000.
+La clase `Server` se utiliza para crear un servidor web utilizando Node.js y Express. El método `start()` se utiliza para iniciar el servidor en un puerto específico. En este caso, el servidor se iniciará en el puerto 3000.
 
-La función ```main()``` es la función principal del programa y se llama para iniciar el servidor. Al llamar a la función ```main()```, se crea una instancia de la clase ```Server``` y se inicia el servidor en el puerto 3000.
+La función `main()` es la función principal del programa y se llama para iniciar el servidor. Al llamar a la función `main()`, se crea una instancia de la clase `Server` y se inicia el servidor en el puerto 3000.
 
 ## Pruebas y cubrimiento
 
-Han sido realiazadas pruebas con mocha y chai con el fin de verificar el correcto funcionamiento de todos y cada uno de los ficheros del proyecto. A continuación se muestras las pruebas realizadas que están todas en un mismo fichero llamado ```Destravate.spec.ts```:
+Han sido realiazadas pruebas con mocha y chai con el fin de verificar el correcto funcionamiento de todos y cada uno de los ficheros del proyecto. A continuación se muestras las pruebas realizadas que están todas en un mismo fichero llamado `Destravate.spec.ts`:
 
 ```TypeScript
 import 'mocha'
@@ -1084,7 +1080,7 @@ let server: Server
 before(async function () {
   server = new Server()
   await server.start(process.env.PORT || 3000)
-  await connect(process.env.MONGODB_URL!) 
+  await connect(process.env.MONGODB_URL!)
   await TrackModel.deleteMany()
   await UserModel.deleteMany()
   await GroupModel.deleteMany()
@@ -1487,7 +1483,6 @@ after(async function () {
   await disconnect()
 })
 ```
-
 
 Y como podemos ver a continuación todas las pruebas fueron superadas con éxito:
 
