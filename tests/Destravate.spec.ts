@@ -26,8 +26,8 @@ let challenge_id = ''
 let server: Server
 before(async function () {
   server = new Server()
-  await server.start(process.env.PORT || 3000)
   await connect(process.env.MONGODB_URL!)
+  await server.start(process.env.PORT || 3000)
   await TrackModel.deleteMany()
   await UserModel.deleteMany()
   await GroupModel.deleteMany()
